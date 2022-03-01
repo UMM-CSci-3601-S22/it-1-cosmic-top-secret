@@ -4,9 +4,6 @@ import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.regex;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -144,10 +141,6 @@ public class ItemController {
      * a "legal" item. It checks the following things (in order):
      *    - The item has a value for the name (`usr.name != null`)
      *    - The item name is not blank (`usr.name.length > 0`)
-     *    - The provided email is valid (matches EMAIL_REGEX)
-     *    - The provided age is > 0
-     *    - The provided role is valid (one of "admin", "editor", or "viewer")
-     *    - A non-blank company is provided
      */
     Item newItem = ctx.bodyValidator(Item.class)
       .check(itm -> itm.name != null && itm.name.length() > 0, "Item must have a non-empty item name")
