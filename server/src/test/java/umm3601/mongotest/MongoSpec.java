@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
 public class MongoSpec {
 
   private MongoCollection<Document> userDocuments;
-
+  private MongoCollection<Document> itemDocuments;
   private static MongoClient mongoClient;
   private static MongoDatabase db;
 
