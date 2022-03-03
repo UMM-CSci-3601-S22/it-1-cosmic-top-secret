@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
 public class MongoSpec {
 
   private MongoCollection<Document> userDocuments;
-
+  private MongoCollection<Document> itemDocuments;
   private static MongoClient mongoClient;
   private static MongoDatabase db;
 
@@ -85,7 +85,10 @@ public class MongoSpec {
   public void clearAndPopulateDB() {
     userDocuments = db.getCollection("users");
     userDocuments.drop();
+    itemDocuments = db.getCollection("items");
+    itemDocuments.drop();
     List<Document> testUsers = new ArrayList<>();
+    List<Document> testItems = new ArrayList<>();
     testUsers.add(
       new Document()
         .append("name", "Chris")
@@ -104,39 +107,42 @@ public class MongoSpec {
         .append("age", 37)
         .append("company", "Frogs, Inc.")
         .append("email", "jamie@frogs.com"));
-
+    testItems.add(
+      new Document()
+        .append("name", "apples"));
     userDocuments.insertMany(testUsers);
+    itemDocuments.insertMany(testItems);
   }
 
   private List<Document> intoList(MongoIterable<Document> documents) {
-    List<Document> users = new ArrayList<>();
-    documents.into(users);
-    return users;
+    List<Document> t = new ArrayList<>();
+    documents.into(t);
+    return t;
   }
 
-  private int countUsers(FindIterable<Document> documents) {
-    List<Document> users = intoList(documents);
-    return users.size();
+  private int countThings(FindIterable<Document> documents) {
+    List<Document> t = intoList(documents);
+    return t.size();
   }
 
   @Test
   public void shouldBeThreeUsers() {
     FindIterable<Document> documents = userDocuments.find();
-    int numberOfUsers = countUsers(documents);
+    int numberOfUsers = countThings(documents);
     assertEquals(3, numberOfUsers, "Should be 3 total users");
   }
 
   @Test
   public void shouldBeOneChris() {
     FindIterable<Document> documents = userDocuments.find(eq("name", "Chris"));
-    int numberOfUsers = countUsers(documents);
+    int numberOfUsers = countThings(documents);
     assertEquals(1, numberOfUsers, "Should be 1 Chris");
   }
 
   @Test
   public void shouldBeTwoOver25() {
     FindIterable<Document> documents = userDocuments.find(gt("age", 25));
-    int numberOfUsers = countUsers(documents);
+    int numberOfUsers = countThings(documents);
     assertEquals(2, numberOfUsers, "Should be 2 over 25");
   }
 
@@ -243,6 +249,12 @@ public class MongoSpec {
     assertEquals(37.0, docs.get(1).get("averageAge"));
     assertEquals("UMM", docs.get(2).get("_id"));
     assertEquals(25.0, docs.get(2).get("averageAge"));
+  }
+  @Test
+  public void shouldBeOneItem() {
+    FindIterable<Document> documents = itemDocuments.find();
+    int numberOfItems = countThings(documents);
+    assertEquals(1, numberOfItems, "Should be 1 total items");
   }
 
 }
