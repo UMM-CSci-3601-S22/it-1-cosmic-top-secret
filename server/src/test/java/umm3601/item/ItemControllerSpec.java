@@ -116,7 +116,13 @@ public class ItemControllerSpec {
     testItems.add(
         new Document()
             .append("name", "apples"));
+
+    samsId = new ObjectId();
+    Document sam = new Document()
+        .append("_id", samsId)
+        .append("name", "Sam");
     itemDocuments.insertMany(testItems);
+    itemDocuments.insertOne(sam);
     itemController = new ItemController(db);
   }
 
