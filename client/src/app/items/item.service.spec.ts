@@ -8,12 +8,15 @@ describe('Item service: ', () => {
   // A small collection of test Items
   const testItems: Item[] = [
     {
+      _id: '45',
       name: 'Granny Smith Apples'
     },
     {
+      _id: '46',
       name: '12-grain Dakota Style Bread'
     },
     {
+      _id: '47',
       name: 'Canned Tomatoes'
     }
   ];
