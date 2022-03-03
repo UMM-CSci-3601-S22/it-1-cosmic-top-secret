@@ -64,6 +64,7 @@ describe('Item service: ', () => {
 
   it('addItem() posts to api/items', () => {
 
+    itemService.addItem(testItems[1]).subscribe();
     const req = httpTestingController.expectOne(itemService.itemUrl);
 
     expect(req.request.method).toEqual('POST');
