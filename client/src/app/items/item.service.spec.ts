@@ -8,12 +8,15 @@ describe('Item service: ', () => {
   // A small collection of test Items
   const testItems: Item[] = [
     {
+      _id: '529634',
       name: 'Granny Smith Apples'
     },
     {
+      _id:'675846',
       name: '12-grain Dakota Style Bread'
     },
     {
+      _id:'65702934',
       name: 'Canned Tomatoes'
     }
   ];
@@ -60,6 +63,19 @@ describe('Item service: ', () => {
     // triggers the subscribe above, which leads to that check
     // actually being performed.
     req.flush(testItems);
+  });
+
+  it('getItemById() calls api/Items/id', () => {
+    const targetItem: Item = testItems[1];
+    const targetId: string = targetItem._id;
+    itemService.getItemById(targetId).subscribe(
+      item => expect(item).toBe(targetItem)
+    );
+
+    const expectedUrl: string = itemService.itemUrl + '/' + targetId;
+    const req = httpTestingController.expectOne(expectedUrl);
+    expect(req.request.method).toEqual('GET');
+    req.flush(targetItem);
   });
 
   it('addItem() posts to api/items', () => {

@@ -19,6 +19,10 @@ export class ItemService {
     });
   }
 
+  getItemById(id: string): Observable<Item> {
+    return this.httpClient.get<Item>(this.itemUrl + '/' + id);
+  }
+
   addItem(newItem: Item): Observable<string> {
     // Send post request to add a new item with the item data as the body.
     return this.httpClient.post<{id: string}>(this.itemUrl, newItem).pipe(map(res => res.id));
