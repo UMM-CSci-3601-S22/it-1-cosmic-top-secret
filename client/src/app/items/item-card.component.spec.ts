@@ -23,6 +23,7 @@ describe('ItemCardComponent', () => {
     fixture = TestBed.createComponent(ItemCardComponent);
     component = fixture.componentInstance;
     component.item = {
+      _id: "OPEGOSH",
       name: 'Granny Smith Apples',
     };
     fixture.detectChanges();
