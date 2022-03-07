@@ -15,7 +15,7 @@ export class ItemProfileComponent implements OnInit, OnDestroy {
   id: string;
   getItemSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private ItemService: ItemService) { }
+  constructor(private route: ActivatedRoute, private itemService: ItemService) { }
 
   ngOnInit(): void {
     // We subscribe to the parameter map here so we'll be notified whenever
@@ -26,7 +26,7 @@ export class ItemProfileComponent implements OnInit, OnDestroy {
       if (this.getItemSub) {
         this.getItemSub.unsubscribe();
       }
-      this.getItemSub = this.ItemService.getItemById(this.id).subscribe(Item => this.item = Item);
+      this.getItemSub = this.itemService.getItemById(this.id).subscribe(item => this.item = item);
     });
   }
 
