@@ -1,9 +1,14 @@
 package umm3601.item;
 
+
 import static com.mongodb.client.model.Filters.eq;
 import static io.javalin.plugin.json.JsonMapperKt.JSON_MAPPER_KEY;
 import static java.util.Map.entry;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -13,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.mockrunner.mock.web.MockHttpServletRequest;
 import com.mockrunner.mock.web.MockHttpServletResponse;
 import com.mongodb.MongoClientSettings;
@@ -31,9 +36,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import io.javalin.core.JavalinConfig;
+import io.javalin.core.validation.ValidationException;
+import io.javalin.http.BadRequestResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.HttpCode;
+import io.javalin.http.NotFoundResponse;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJackson;
 
@@ -115,7 +123,11 @@ public class ItemControllerSpec {
     List<Document> testItems = new ArrayList<>();
     testItems.add(
         new Document()
-            .append("name", "apples"));
+            .append("name", "apples")
+            .append("comment", "this is a comment")
+            .append("minThreshold", "4")
+            .append("amount", "5")
+            .append("tags", "tag1"));
 
     samsId = new ObjectId();
     Document sam = new Document()
@@ -220,5 +232,53 @@ public class ItemControllerSpec {
 
     // Item is no longer in the database
     assertEquals(0, db.getCollection("items").countDocuments(eq("_id", new ObjectId(testID))));
+  }
+  @Test
+  public void getItemsByFilter() throws IOException {
+    mockReq.setQueryString("name=apples&comment=this is a comment&minThreshold=4&amount=5&tags=tag1");
+    Context ctx = mockContext("api/items");
+
+    itemController.getItems(ctx);
+    Item[] resultItem = returnedItems(ctx);
+
+    assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
+    assertEquals(1, resultItem.length);
+    for (Item item : resultItem) {
+      assertEquals("apples", item.name);
+      assertEquals("5", item.amount);
+      assertEquals("this is a comment", item.comment);
+      assertEquals("4", item.minThreshold);
+      assertEquals("tag1", item.tags);
+    }
+  }
+  @Test
+  public void getItemWithExistentId() throws IOException {
+    String testID = samsId.toHexString();
+    Context ctx = mockContext("api/items/{id}", Map.of("id", testID));
+
+    itemController.getItem(ctx);
+    Item resultItem = returnedSingleItem(ctx);
+
+    assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
+    assertEquals(samsId.toHexString(), resultItem._id);
+    assertEquals("Sam", resultItem.name);
+  }
+
+  @Test
+  public void getItemWithBadId() throws IOException {
+    Context ctx = mockContext("api/items/{id}", Map.of("id", "bad"));
+
+    assertThrows(BadRequestResponse.class, () -> {
+      itemController.getItem(ctx);
+    });
+  }
+
+  @Test
+  public void getItemWithNonexistentId() throws IOException {
+    Context ctx = mockContext("api/items/{id}", Map.of("id", "58af3a600343927e48e87335"));
+
+    assertThrows(NotFoundResponse.class, () -> {
+      itemController.getItem(ctx);
+    });
   }
 }

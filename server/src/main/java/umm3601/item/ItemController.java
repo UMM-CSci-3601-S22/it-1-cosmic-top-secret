@@ -32,7 +32,7 @@ public class ItemController {
 
   private static final String NAME_KEY = "name";
   private static final String COMMENT_KEY = "comment";
-  private static final String AMMOUNT_KEY = "ammount";
+  private static final String AMOUNT_KEY = "amount";
   private static final String MINTHRESHOLD_KEY = "minThreshold";
   private static final String TAGS_KEY = "tags";
   private final JacksonMongoCollection<Item> itemCollection;
@@ -106,8 +106,8 @@ public class ItemController {
     if (ctx.queryParamMap().containsKey(MINTHRESHOLD_KEY)) {
       filters.add(regex(MINTHRESHOLD_KEY,  Pattern.quote(ctx.queryParam(MINTHRESHOLD_KEY)), "i"));
     }
-    if (ctx.queryParamMap().containsKey(AMMOUNT_KEY)) {
-      filters.add(regex(AMMOUNT_KEY,  Pattern.quote(ctx.queryParam(AMMOUNT_KEY)), "i"));
+    if (ctx.queryParamMap().containsKey(AMOUNT_KEY)) {
+      filters.add(regex(AMOUNT_KEY,  Pattern.quote(ctx.queryParam(AMOUNT_KEY)), "i"));
     }
     if (ctx.queryParamMap().containsKey(TAGS_KEY)) {
       filters.add(regex(TAGS_KEY,  Pattern.quote(ctx.queryParam(TAGS_KEY)), "i"));
