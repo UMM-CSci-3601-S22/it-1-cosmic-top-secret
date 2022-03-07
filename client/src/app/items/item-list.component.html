@@ -1,0 +1,63 @@
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+
+    <mat-card class="search-card">
+      <mat-card-title class="item-list-title">Items</mat-card-title>
+      <mat-card-content fxLayout="column" >
+        <br>
+        <div fxLayout="row wrap" fxLayoutGap="10px">
+          <label>View type: </label>
+          <mat-radio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
+            <mat-radio-button value="card">Card</mat-radio-button>
+            <mat-radio-button value="list">List</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredItems; else itemsError" >
+    <!-- Switch between card and list view based on the viewType variable, set above in the mar-radio-group -->
+    <div [ngSwitch]="viewType">
+
+      <!-- Card grid view -->
+      <div *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="item-cards-container">
+        <app-item-card [simple]="true" *ngFor="let item of filteredItems" class="item-card" [item]="item" fxFlex="1 1 280px"></app-item-card>
+      </div>
+
+      <!-- List view -->
+      <mat-card *ngSwitchCase="'list'">
+        <mat-card-content>
+          <mat-nav-list class="item-nav-list">
+            <h3 mat-subheader>Items</h3>
+            <a mat-list-item *ngFor="let item of this.filteredItems" [routerLink]="['/items', item._id]" class="item-list-item">
+              <h3 matLine class="item-list-name"> {{item.name}} </h3>
+            </a>
+          </mat-nav-list>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+
+  <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+  <ng-template #itemsError>
+    <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="item-error">
+      <mat-error>
+        There was a problem loading the items. Possibly the server is down or perhaps there are network
+        issues.
+      </mat-error>
+      <mat-error>
+        Please wait a bit and try again or start the server.
+      </mat-error>
+    </div>
+  </ng-template>
+
+</div>
+
+<button mat-fab class="add-item-fab" matTooltip="Add Item" matTooltipPosition="left" routerLink="/items/new" data-test="addItemButton">
+    <mat-icon class="md-24" aria-label="Add Item">add</mat-icon>
+</button>

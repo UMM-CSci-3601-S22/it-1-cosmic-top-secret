@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Item} from '../app/items/item';
+import { Item } from '../app/items/item';
 import { ItemService } from '../app/items/item.service';
 
 /**
@@ -11,16 +11,16 @@ import { ItemService } from '../app/items/item.service';
 export class MockItemService extends ItemService {
   static testItems: Item[] = [
     {
-      _id: '22',
-      name: 'apples'
+      _id: 'apples_id',
+      name: 'Granny Smith Apples',
     },
     {
-      _id: '23',
-      name: 'bannanas'
+      _id: 'steak_id',
+      name: 'Sirloin Steak',
     },
     {
-      _id:'24',
-      name: 'pop-tarts'
+      _id: 'scone_id',
+      name: 'Plain Scones',
     }
   ];
 
@@ -34,9 +34,9 @@ export class MockItemService extends ItemService {
   }
 
   getItemById(id: string): Observable<Item> {
-    // If the specified ID is for the first test item,
-    // return that item, otherwise return `null` so
-    // we can test illegal item requests.
+    // If the specified ID is for the first test Item,
+    // return that Item, otherwise return `null` so
+    // we can test illegal Item requests.
     if (id === MockItemService.testItems[0]._id) {
       return of(MockItemService.testItems[0]);
     } else {

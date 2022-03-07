@@ -1,0 +1,10 @@
+<mat-card class="item-card" *ngIf="this.item">
+  <mat-card-header>
+    <mat-card-title class="item-card-name">{{ this.item.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="!this.simple">
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button data-test="viewProfileButton" *ngIf="this.simple" [routerLink]="['/items', this.item._id]">View Profile</button>
+  </mat-card-actions>
+</mat-card>

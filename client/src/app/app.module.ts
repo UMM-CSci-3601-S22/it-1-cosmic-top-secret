@@ -32,6 +32,9 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { UserCardComponent } from './users/user-card.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
+import { ItemCardComponent } from './items/item-card.component';
+import { ItemProfileComponent } from './items/item-profile.component';
+import { ItemListComponent } from './items/item-list.component';
 import { AddItemComponent } from './items/add-item.component';
 import { ItemService } from './items/item.service';
 
@@ -62,6 +65,9 @@ const MATERIAL_MODULES: any[] = [
     UserCardComponent,
     UserProfileComponent,
     AddUserComponent,
+    ItemCardComponent,
+    ItemProfileComponent,
+    ItemListComponent,
     AddItemComponent,
   ],
   imports: [
