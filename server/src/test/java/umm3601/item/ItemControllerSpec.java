@@ -257,7 +257,8 @@ public class ItemControllerSpec {
     Context ctx = mockContext("api/items/{id}", Map.of("id", testID));
 
     itemController.getItem(ctx);
-    Item resultItem = returnedSingleItem(ctx);
+    String result = ctx.resultString();
+    Item resultItem = javalinJackson.fromJsonString(result, Item.class);
 
     assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
     assertEquals(samsId.toHexString(), resultItem._id);
