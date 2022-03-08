@@ -98,5 +98,22 @@ describe('AddProductComponent', () => {
       });
 
     });
+    describe('The minThreshold field', () => {
+      let minThresholdControl: AbstractControl;
+
+      beforeEach(() => {
+        minThresholdControl = addProductComponent.addProductForm.controls.minThreshold;
+      });
+
+      it('should not allow empty minThresholds', () => {
+        minThresholdControl.setValue('');
+        expect(minThresholdControl.valid).toBeFalsy();
+      });
+
+      it('should be fine with "7"', () => {
+        minThresholdControl.setValue('7');
+        expect(minThresholdControl.valid).toBeTruthy();
+      });
+    });
   });
 });

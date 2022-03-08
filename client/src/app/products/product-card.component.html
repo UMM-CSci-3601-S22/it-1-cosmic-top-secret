@@ -3,6 +3,7 @@
     <mat-card-title class="product-card-name">{{ this.product.name }}</mat-card-title>
   </mat-card-header>
   <mat-card-content *ngIf="!this.simple">
+    <p>Minimum Threshold: <span class="user-card-minThreshold">{{ this.product.minThreshold }}</span></p>
   </mat-card-content>
   <mat-card-actions>
     <button mat-button data-test="viewProfileButton" *ngIf="this.simple" [routerLink]="['/products', this.product._id]">View Profile</button>
