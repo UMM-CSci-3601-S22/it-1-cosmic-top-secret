@@ -2,14 +2,17 @@ package umm3601.product;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.elemMatch;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Map;
 
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
+import com.mongodb.client.result.DeleteResult;
 
 import org.bson.UuidRepresentation;
 
@@ -21,6 +24,7 @@ import org.bson.Document;
 
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+import io.javalin.http.HttpCode;
 
 public class ProductController {
 
@@ -89,15 +93,14 @@ public class ProductController {
       filters.add(eq(THRESHOLD_KEY, targetThreshold));
     }
 
-    /*
+
     if (ctx.queryParamMap().containsKey(TAGS_KEY)) {
       //take the list of tags and separate them into an array
       String[] tags = ctx.queryParam(TAGS_KEY).split("\\");
       for (String tag: tags) {
-        filters.add();
+        filters.add(elemMatch(TAGS_KEY, eq(TAGS_KEY, tag)));
       }
     }
-    */
 
     Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
     return combinedFilter;
