@@ -10,6 +10,7 @@ public class Pantry {
   public String _id;
 
   //Some Mongo Foreign key to product
+  public String productId;
 
   public String notes;
   public String purchaseDate;
