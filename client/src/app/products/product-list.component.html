@@ -1,0 +1,63 @@
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+
+    <mat-card class="search-card">
+      <mat-card-title class="product-list-title">Products</mat-card-title>
+      <mat-card-content fxLayout="column" >
+        <br>
+        <div fxLayout="row wrap" fxLayoutGap="10px">
+          <label>View type: </label>
+          <mat-radio-group aria-label="View type" [(ngModel)]="viewType" data-test="viewTypeRadio">
+            <mat-radio-button value="card">Card</mat-radio-button>
+            <mat-radio-button value="list">List</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" *ngIf="serverFilteredProducts; else productsError" >
+    <!-- Switch between card and list view based on the viewType variable, set above in the mar-radio-group -->
+    <div [ngSwitch]="viewType">
+
+      <!-- Card grid view -->
+      <div *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="product-cards-container">
+        <app-product-card [simple]="true" *ngFor="let product of filteredProducts" class="product-card" [product]="product" fxFlex="1 1 280px"></app-product-card>
+      </div>
+
+      <!-- List view -->
+      <mat-card *ngSwitchCase="'list'">
+        <mat-card-content>
+          <mat-nav-list class="product-nav-list">
+            <h3 mat-subheader>Products</h3>
+            <a mat-list-item *ngFor="let product of this.filteredProducts" [routerLink]="['/products', product._id]" class="product-list-item">
+              <h3 matLine class="product-list-name"> {{product.name}} </h3>
+            </a>
+          </mat-nav-list>
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+
+  <!-- Maybe this should be a pop-up instead of just a text message? Not sure. -->
+  <ng-template #productsError>
+    <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10" class="product-error">
+      <mat-error>
+        There was a problem loading the products. Possibly the server is down or perhaps there are network
+        issues.
+      </mat-error>
+      <mat-error>
+        Please wait a bit and try again or start the server.
+      </mat-error>
+    </div>
+  </ng-template>
+
+</div>
+
+<button mat-fab class="add-product-fab" matTooltip="Add Product" matTooltipPosition="left" routerLink="/products/new" data-test="addProductButton">
+    <mat-icon class="md-24" aria-label="Add Product">add</mat-icon>
+</button>

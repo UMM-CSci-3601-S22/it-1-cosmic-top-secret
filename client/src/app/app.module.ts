@@ -32,6 +32,11 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { UserCardComponent } from './users/user-card.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
+import { ProductCardComponent } from './products/product-card.component';
+import { ProductProfileComponent } from './products/product-profile.component';
+import { ProductListComponent } from './products/product-list.component';
+import { AddProductComponent } from './products/add-product.component';
+import { ProductService } from './products/product.service';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -60,6 +65,10 @@ const MATERIAL_MODULES: any[] = [
     UserCardComponent,
     UserProfileComponent,
     AddUserComponent,
+    ProductCardComponent,
+    ProductProfileComponent,
+    ProductListComponent,
+    AddProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,6 +82,7 @@ const MATERIAL_MODULES: any[] = [
     LayoutModule,
   ],
   providers: [
+    ProductService,
     UserService
   ],
   bootstrap: [AppComponent]

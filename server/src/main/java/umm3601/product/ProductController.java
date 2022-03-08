@@ -54,15 +54,26 @@ public class ProductController {
     }
   }
 
+  /**
+   * Get a JSON response with a list of all the products.
+   *
+   * @param ctx a Javalin HTTP context
+   */
   public void getProducts(Context ctx) {
     Bson combinedFilter = constructFilter(ctx);
     Bson sortingOrder = constructSortingOrder(ctx);
 
+    // All three of the find, sort, and into steps happen "in parallel" inside the
+    // database system. So MongoDB is going to find the products with the specified
+    // properties, return those sorted in the specified manner, and put the
+    // results into an initially empty ArrayList.
     ArrayList<Product> matchingProducts = productCollection
-    .find(combinedFilter)
-    .sort(sortingOrder)
-    .into(new ArrayList<>());
+      .find(combinedFilter)
+      .sort(sortingOrder)
+      .into(new ArrayList<>());
 
+    // Set the JSON body of the response to be the list of products returned by
+    // the database.
     ctx.json(matchingProducts);
   }
 
@@ -102,5 +113,46 @@ public class ProductController {
     return sortingOrder;
   }
 
+  /**
+   * Get a JSON response with a list of all the products.
+   *
+   * @param ctx a Javalin HTTP context
+   */
+  public void addNewProduct(Context ctx) {
+    /*
+     * The follow chain of statements uses the Javalin validator system
+     * to verify that instance of `Product` provided in this context is
+     * a "legal" product. It checks the following things (in order):
+     *    - The product has a value for the name (`usr.name != null`)
+     *    - The product name is not blank (`usr.name.length > 0`)
+     */
+    Product newProduct = ctx.bodyValidator(Product.class)
+      .check(itm -> itm.name != null && itm.name.length() > 0, "Product must have a non-empty product name")
+      .get();
 
+    productCollection.insertOne(newProduct);
+
+    // 201 is the HTTP code for when we successfully
+    // create a new resource (a product in this case).
+    // See, e.g., https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+    // for a description of the various response codes.
+    ctx.status(HttpCode.CREATED);
+    ctx.json(Map.of("id", newProduct._id));
+  }
+
+  /**
+   * Delete the product specified by the `id` parameter in the request.
+   *
+   * @param ctx a Javalin HTTP context
+   */
+  public void deleteProduct(Context ctx) {
+    String id = ctx.pathParam("id");
+    DeleteResult deleteResult = productCollection.deleteOne(eq("_id", new ObjectId(id)));
+    if (deleteResult.getDeletedCount() != 1) {
+      throw new NotFoundResponse(
+        "Was unable to delete ID "
+          + id
+          + "; perhaps illegal ID or an ID for an product not in the system?");
+    }
+  }
 }
