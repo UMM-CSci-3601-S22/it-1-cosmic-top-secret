@@ -58,7 +58,7 @@ import org.junit.jupiter.api.Test;
 public class MongoSpec {
 
   private MongoCollection<Document> userDocuments;
-  private MongoCollection<Document> itemDocuments;
+  private MongoCollection<Document> productDocuments;
   private static MongoClient mongoClient;
   private static MongoDatabase db;
 
@@ -85,10 +85,10 @@ public class MongoSpec {
   public void clearAndPopulateDB() {
     userDocuments = db.getCollection("users");
     userDocuments.drop();
-    itemDocuments = db.getCollection("items");
-    itemDocuments.drop();
+    productDocuments = db.getCollection("products");
+    productDocuments.drop();
     List<Document> testUsers = new ArrayList<>();
-    List<Document> testItems = new ArrayList<>();
+    List<Document> testProducts = new ArrayList<>();
     testUsers.add(
       new Document()
         .append("name", "Chris")
@@ -107,11 +107,11 @@ public class MongoSpec {
         .append("age", 37)
         .append("company", "Frogs, Inc.")
         .append("email", "jamie@frogs.com"));
-    testItems.add(
+    testProducts.add(
       new Document()
         .append("name", "apples"));
     userDocuments.insertMany(testUsers);
-    itemDocuments.insertMany(testItems);
+    productDocuments.insertMany(testProducts);
   }
 
   private List<Document> intoList(MongoIterable<Document> documents) {
@@ -251,10 +251,10 @@ public class MongoSpec {
     assertEquals(25.0, docs.get(2).get("averageAge"));
   }
   @Test
-  public void shouldBeOneItem() {
-    FindIterable<Document> documents = itemDocuments.find();
-    int numberOfItems = countThings(documents);
-    assertEquals(1, numberOfItems, "Should be 1 total items");
+  public void shouldBeOneProduct() {
+    FindIterable<Document> documents = productDocuments.find();
+    int numberOfProducts = countThings(documents);
+    assertEquals(1, numberOfProducts, "Should be 1 total products");
   }
 
 }

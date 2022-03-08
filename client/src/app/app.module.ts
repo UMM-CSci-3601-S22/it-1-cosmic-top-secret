@@ -32,11 +32,11 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { UserCardComponent } from './users/user-card.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
-import { ItemCardComponent } from './items/item-card.component';
-import { ItemProfileComponent } from './items/item-profile.component';
-import { ItemListComponent } from './items/item-list.component';
-import { AddItemComponent } from './items/add-item.component';
-import { ItemService } from './items/item.service';
+import { ProductCardComponent } from './products/product-card.component';
+import { ProductProfileComponent } from './products/product-profile.component';
+import { ProductListComponent } from './products/product-list.component';
+import { AddProductComponent } from './products/add-product.component';
+import { ProductService } from './products/product.service';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -65,10 +65,10 @@ const MATERIAL_MODULES: any[] = [
     UserCardComponent,
     UserProfileComponent,
     AddUserComponent,
-    ItemCardComponent,
-    ItemProfileComponent,
-    ItemListComponent,
-    AddItemComponent,
+    ProductCardComponent,
+    ProductProfileComponent,
+    ProductListComponent,
+    AddProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,7 +82,7 @@ const MATERIAL_MODULES: any[] = [
     LayoutModule,
   ],
   providers: [
-    ItemService,
+    ProductService,
     UserService
   ],
   bootstrap: [AppComponent]

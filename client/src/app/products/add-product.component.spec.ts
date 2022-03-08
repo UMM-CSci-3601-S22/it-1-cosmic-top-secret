@@ -7,14 +7,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MockItemService } from 'src/testing/item.service.mock';
-import { AddItemComponent } from './add-item.component';
-import { ItemService } from './item.service';
+import { MockProductService } from 'src/testing/product.service.mock';
+import { AddProductComponent } from './add-product.component';
+import { ProductService } from './product.service';
 
-describe('AddItemComponent', () => {
-  let addItemComponent: AddItemComponent;
-  let addItemForm: FormGroup;
-  let fixture: ComponentFixture<AddItemComponent>;
+describe('AddProductComponent', () => {
+  let addProductComponent: AddProductComponent;
+  let addProductForm: FormGroup;
+  let fixture: ComponentFixture<AddProductComponent>;
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
@@ -29,39 +29,39 @@ describe('AddItemComponent', () => {
         BrowserAnimationsModule,
         RouterTestingModule
       ],
-      declarations: [AddItemComponent],
-      providers: [{ provide: ItemService, useValue: new MockItemService() }]
+      declarations: [AddProductComponent],
+      providers: [{ provide: ProductService, useValue: new MockProductService() }]
     })
       .compileComponents().catch(error => {
         expect(error).toBeNull();
       });
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(AddItemComponent);
-      addItemComponent = fixture.componentInstance;
-      addItemComponent.ngOnInit();
+      fixture = TestBed.createComponent(AddProductComponent);
+      addProductComponent = fixture.componentInstance;
+      addProductComponent.ngOnInit();
       fixture.detectChanges();
-      addItemForm = addItemComponent.addItemForm;
-      expect(addItemForm).toBeDefined();
-      expect(addItemForm.controls).toBeDefined();
+      addProductForm = addProductComponent.addProductForm;
+      expect(addProductForm).toBeDefined();
+      expect(addProductForm.controls).toBeDefined();
     });
 
     it('should create the component and form', () => {
-      expect(addItemComponent).toBeTruthy();
-      expect(addItemForm).toBeTruthy();
+      expect(addProductComponent).toBeTruthy();
+      expect(addProductForm).toBeTruthy();
     });
 
     // Confirms that an initial, empty form is *not* valid, so
     // people can't submit an empty form.
     it('form should be invalid when empty', () => {
-      expect(addItemForm.valid).toBeFalsy();
+      expect(addProductForm.valid).toBeFalsy();
     });
 
     describe('The name field', () => {
       let nameControl: AbstractControl;
 
       beforeEach(() => {
-        nameControl = addItemComponent.addItemForm.controls.name;
+        nameControl = addProductComponent.addProductForm.controls.name;
       });
 
       it('should not allow empty names', () => {

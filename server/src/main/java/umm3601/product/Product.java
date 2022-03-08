@@ -1,4 +1,4 @@
-package umm3601.item;
+package umm3601.product;
 
 import org.mongojack.Id;
 import org.mongojack.ObjectId;
@@ -19,7 +19,7 @@ import org.mongojack.ObjectId;
 // check in CheckStyle so that we don't get a failed
 // build when Gradle runs CheckStyle.
 @SuppressWarnings({"VisibilityModifier"})
-public class Item {
+public class Product {
 
   @ObjectId @Id
   // By default Java field names shouldn't start with underscores.

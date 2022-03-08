@@ -1,4 +1,4 @@
-package umm3601.item;
+package umm3601.product;
 
 
 import static com.mongodb.client.model.Filters.eq;
@@ -40,7 +40,7 @@ import io.javalin.http.util.ContextUtil;
 import io.javalin.plugin.json.JavalinJackson;
 
 /**
- * Tests the logic of the ItemController
+ * Tests the logic of the ProductController
  *
  * @throws IOException
  */
@@ -52,7 +52,7 @@ import io.javalin.plugin.json.JavalinJackson;
 // also a lot of "magic strings" that Checkstyle doesn't actually
 // flag as a problem) make more sense.
 @SuppressWarnings({ "MagicNumber" })
-public class ItemControllerSpec {
+public class ProductControllerSpec {
 
   // Mock requests and responses that will be reset in `setupEach()`
   // and then (re)used in each of the tests.
@@ -61,7 +61,7 @@ public class ItemControllerSpec {
 
   // An instance of the controller we're testing that is prepared in
   // `setupEach()`, and then exercised in the various tests below.
-  private ItemController itemController;
+  private ProductController productController;
 
   // A Mongo object ID that is initialized in `setupEach()` and used
   // in a few of the tests. It isn't used all that often, though,
@@ -112,10 +112,10 @@ public class ItemControllerSpec {
     mockRes.resetAll();
 
     // Setup database
-    MongoCollection<Document> itemDocuments = db.getCollection("items");
-    itemDocuments.drop();
-    List<Document> testItems = new ArrayList<>();
-    testItems.add(
+    MongoCollection<Document> productDocuments = db.getCollection("products");
+    productDocuments.drop();
+    List<Document> testProducts = new ArrayList<>();
+    testProducts.add(
         new Document()
             .append("name", "apples")
             .append("comment", "this is a comment")
@@ -127,9 +127,9 @@ public class ItemControllerSpec {
     Document sam = new Document()
         .append("_id", samsId)
         .append("name", "Sam");
-    itemDocuments.insertMany(testItems);
-    itemDocuments.insertOne(sam);
-    itemController = new ItemController(db);
+    productDocuments.insertMany(testProducts);
+    productDocuments.insertOne(sam);
+    productController = new ProductController(db);
   }
 
   /**
@@ -171,109 +171,109 @@ public class ItemControllerSpec {
 
   /**
    * A little helper method that assumes that the given context
-   * body contains an array of Items, and extracts and returns
+   * body contains an array of Products, and extracts and returns
    * that array.
    *
    * @param ctx the `Context` whose body is assumed to contain
-   *  an array of `Item`s.
-   * @return the array of `Item`s from the given `Context`.
+   *  an array of `Product`s.
+   * @return the array of `Product`s from the given `Context`.
    */
-  private Item[] returnedItems(Context ctx) {
+  private Product[] returnedProducts(Context ctx) {
     String result = ctx.resultString();
-    Item[] items = javalinJackson.fromJsonString(result, Item[].class);
-    return items;
+    Product[] products = javalinJackson.fromJsonString(result, Product[].class);
+    return products;
   }
 
   /**
    * A little helper method that assumes that the given context
-   * body contains a *single* Item, and extracts and returns
-   * that Item.
+   * body contains a *single* Product, and extracts and returns
+   * that Product.
    *
    * @param ctx the `Context` whose body is assumed to contain
-   *  a *single* `Item`.
-   * @return the `Item` extracted from the given `Context`.
+   *  a *single* `Product`.
+   * @return the `Product` extracted from the given `Context`.
    */
   @Test
-  public void canGetAllItems() throws IOException {
+  public void canGetAllProducts() throws IOException {
     // Create our fake Javalin context
-    String path = "api/items";
+    String path = "api/products";
     Context ctx = mockContext(path);
 
-    itemController.getItems(ctx);
-    Item[] returnedItems = returnedItems(ctx);
+    productController.getProducts(ctx);
+    Product[] returnedProducts = returnedProducts(ctx);
 
     // The response status should be 200, i.e., our request
     // was handled successfully (was OK). This is a named constant in
     // the class HttpCode.
     assertEquals(HttpCode.OK.getStatus(), mockRes.getStatus());
     assertEquals(
-      db.getCollection("items").countDocuments(),
-      returnedItems.length
+      db.getCollection("products").countDocuments(),
+      returnedProducts.length
     );
   }
   @Test
-  public void deleteItem() throws IOException {
+  public void deleteProduct() throws IOException {
     String testID = samsId.toHexString();
 
-    // Item exists before deletion
-    assertEquals(1, db.getCollection("items").countDocuments(eq("_id", new ObjectId(testID))));
+    // Product exists before deletion
+    assertEquals(1, db.getCollection("products").countDocuments(eq("_id", new ObjectId(testID))));
 
-    Context ctx = mockContext("api/items/{id}", Map.of("id", testID));
+    Context ctx = mockContext("api/products/{id}", Map.of("id", testID));
 
-    itemController.deleteItem(ctx);
+    productController.deleteProduct(ctx);
 
     assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
 
-    // Item is no longer in the database
-    assertEquals(0, db.getCollection("items").countDocuments(eq("_id", new ObjectId(testID))));
+    // Product is no longer in the database
+    assertEquals(0, db.getCollection("products").countDocuments(eq("_id", new ObjectId(testID))));
   }
   @Test
-  public void getItemsByFilter() throws IOException {
+  public void getProductsByFilter() throws IOException {
     mockReq.setQueryString("name=apples&comment=this is a comment&minThreshold=4&amount=5&tags=tag1");
-    Context ctx = mockContext("api/items");
+    Context ctx = mockContext("api/products");
 
-    itemController.getItems(ctx);
-    Item[] resultItem = returnedItems(ctx);
+    productController.getProducts(ctx);
+    Product[] resultProduct = returnedProducts(ctx);
 
     assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
-    assertEquals(1, resultItem.length);
-    for (Item item : resultItem) {
-      assertEquals("apples", item.name);
-      assertEquals("5", item.amount);
-      assertEquals("this is a comment", item.comment);
-      assertEquals("4", item.minThreshold);
-      assertEquals("tag1", item.tags);
+    assertEquals(1, resultProduct.length);
+    for (Product product : resultProduct) {
+      assertEquals("apples", product.name);
+      assertEquals("5", product.amount);
+      assertEquals("this is a comment", product.comment);
+      assertEquals("4", product.minThreshold);
+      assertEquals("tag1", product.tags);
     }
   }
   @Test
-  public void getItemWithExistentId() throws IOException {
+  public void getProductWithExistentId() throws IOException {
     String testID = samsId.toHexString();
-    Context ctx = mockContext("api/items/{id}", Map.of("id", testID));
+    Context ctx = mockContext("api/products/{id}", Map.of("id", testID));
 
-    itemController.getItem(ctx);
+    productController.getProduct(ctx);
     String result = ctx.resultString();
-    Item resultItem = javalinJackson.fromJsonString(result, Item.class);
+    Product resultProduct = javalinJackson.fromJsonString(result, Product.class);
 
     assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
-    assertEquals(samsId.toHexString(), resultItem._id);
-    assertEquals("Sam", resultItem.name);
+    assertEquals(samsId.toHexString(), resultProduct._id);
+    assertEquals("Sam", resultProduct.name);
   }
 
   @Test
-  public void getItemWithBadId() throws IOException {
-    Context ctx = mockContext("api/items/{id}", Map.of("id", "bad"));
+  public void getProductWithBadId() throws IOException {
+    Context ctx = mockContext("api/products/{id}", Map.of("id", "bad"));
 
     assertThrows(BadRequestResponse.class, () -> {
-      itemController.getItem(ctx);
+      productController.getProduct(ctx);
     });
   }
 
   @Test
-  public void getItemWithNonexistentId() throws IOException {
-    Context ctx = mockContext("api/items/{id}", Map.of("id", "58af3a600343927e48e87335"));
+  public void getProductWithNonexistentId() throws IOException {
+    Context ctx = mockContext("api/products/{id}", Map.of("id", "58af3a600343927e48e87335"));
 
     assertThrows(NotFoundResponse.class, () -> {
-      itemController.getItem(ctx);
+      productController.getProduct(ctx);
     });
   }
 }

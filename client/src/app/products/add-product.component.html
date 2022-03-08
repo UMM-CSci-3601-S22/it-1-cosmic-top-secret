@@ -1,18 +1,18 @@
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
-    <form [formGroup]="addItemForm" (ngSubmit)="submitForm();">
-    <mat-card class="add-item-card">
+    <form [formGroup]="addProductForm" (ngSubmit)="submitForm();">
+    <mat-card class="add-product-card">
         <mat-card-header>
-          <mat-card-title class="add-item-title">New Item</mat-card-title>
+          <mat-card-title class="add-product-title">New Product</mat-card-title>
         </mat-card-header>
         <mat-card-content fxLayout="column">
           <mat-form-field>
             <mat-label>Name</mat-label>
             <input matInput placeholder="Name" formControlName="name"
                   required>
-            <mat-error *ngFor="let validation of addItemValidationMessages.name">
+            <mat-error *ngFor="let validation of addProductValidationMessages.name">
               <mat-error class="error-message" data-test="nameError"
-                        *ngIf="addItemForm.get('name').hasError(validation.type) && (addItemForm.get('name').dirty || addItemForm.get('name').touched)">
+                        *ngIf="addProductForm.get('name').hasError(validation.type) && (addProductForm.get('name').dirty || addProductForm.get('name').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
@@ -33,9 +33,9 @@
             mat-button
             type="button"
             color="primary"
-            [disabled]="!addItemForm.valid"
+            [disabled]="!addProductForm.valid"
             type="submit"
-            data-test="confirmAddItemButton"
+            data-test="confirmAddProductButton"
           >
             ADD ITEM
           </button>

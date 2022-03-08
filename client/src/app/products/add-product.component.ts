@@ -2,32 +2,32 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Item } from './item';
-import { ItemService } from './item.service';
+import { Product } from './product';
+import { ProductService } from './product.service';
 @Component({
-  selector: 'app-add-item',
-  templateUrl: './add-item.component.html',
-  styleUrls: ['./add-item.component.scss']
+  selector: 'app-add-product',
+  templateUrl: './add-product.component.html',
+  styleUrls: ['./add-product.component.scss']
 })
-export class AddItemComponent implements OnInit {
+export class AddProductComponent implements OnInit {
 
-  addItemForm: FormGroup;
+  addProductForm: FormGroup;
 
-  item: Item;
-  addItemValidationMessages = {
+  product: Product;
+  addProductValidationMessages = {
     name: [
       { type: 'required', message: 'Name is required' },
       { type: 'minlength', message: 'Name must be at least 2 characters long' },
       { type: 'maxlength', message: 'Name cannot be more than 100 characters long' },
     ],
   };
-  constructor(private fb: FormBuilder, private itemService: ItemService, private snackBar: MatSnackBar, private router: Router) { }
+  constructor(private fb: FormBuilder, private productService: ProductService, private snackBar: MatSnackBar, private router: Router) { }
 
 
   createForms() {
 
     // add user form validations
-    this.addItemForm = this.fb.group({
+    this.addProductForm = this.fb.group({
       // We allow alphanumeric input and limit the length for name.
       name: new FormControl('', Validators.compose([
         Validators.required,
@@ -46,13 +46,13 @@ export class AddItemComponent implements OnInit {
   }
 
   submitForm() {
-    this.itemService.addItem(this.addItemForm.value).subscribe(newID => {
-      this.snackBar.open('Added Item ' + this.addItemForm.value.name, null, {
+    this.productService.addProduct(this.addProductForm.value).subscribe(newID => {
+      this.snackBar.open('Added Product ' + this.addProductForm.value.name, null, {
         duration: 2000,
       });
-      this.router.navigate(['/items/', newID]);
+      this.router.navigate(['/products/', newID]);
     }, err => {
-      this.snackBar.open('Failed to add the item', 'OK', {
+      this.snackBar.open('Failed to add the product', 'OK', {
         duration: 5000,
       });
     });

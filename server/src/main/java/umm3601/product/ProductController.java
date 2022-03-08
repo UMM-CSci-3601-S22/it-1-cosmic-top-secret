@@ -1,4 +1,4 @@
-package umm3601.item;
+package umm3601.product;
 
 import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
@@ -26,72 +26,72 @@ import io.javalin.http.HttpCode;
 import io.javalin.http.NotFoundResponse;
 
 /**
- * Controller that manages requests for info about items.
+ * Controller that manages requests for info about products.
  */
-public class ItemController {
+public class ProductController {
 
   private static final String NAME_KEY = "name";
   private static final String COMMENT_KEY = "comment";
   private static final String AMOUNT_KEY = "amount";
   private static final String MINTHRESHOLD_KEY = "minThreshold";
   private static final String TAGS_KEY = "tags";
-  private final JacksonMongoCollection<Item> itemCollection;
+  private final JacksonMongoCollection<Product> productCollection;
 
   /**
-   * Construct a controller for items.
+   * Construct a controller for products.
    *
-   * @param database the database containing item data
+   * @param database the database containing product data
    */
-  public ItemController(MongoDatabase database) {
-    itemCollection = JacksonMongoCollection.builder().build(
+  public ProductController(MongoDatabase database) {
+    productCollection = JacksonMongoCollection.builder().build(
         database,
-        "items",
-        Item.class,
+        "products",
+        Product.class,
         UuidRepresentation.STANDARD);
   }
 
   /**
-   * Get the single item specified by the `id` parameter in the request.
+   * Get the single product specified by the `id` parameter in the request.
    *
    * @param ctx a Javalin HTTP context
    */
-  public void getItem(Context ctx) {
+  public void getProduct(Context ctx) {
     String id = ctx.pathParam("id");
-    Item item;
+    Product product;
 
     try {
-      item = itemCollection.find(eq("_id", new ObjectId(id))).first();
+      product = productCollection.find(eq("_id", new ObjectId(id))).first();
     } catch (IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested item id wasn't a legal Mongo Object ID.");
+      throw new BadRequestResponse("The requested product id wasn't a legal Mongo Object ID.");
     }
-    if (item == null) {
-      throw new NotFoundResponse("The requested item was not found");
+    if (product == null) {
+      throw new NotFoundResponse("The requested product was not found");
     } else {
-      ctx.json(item);
+      ctx.json(product);
     }
   }
 
   /**
-   * Get a JSON response with a list of all the items.
+   * Get a JSON response with a list of all the products.
    *
    * @param ctx a Javalin HTTP context
    */
-  public void getItems(Context ctx) {
+  public void getProducts(Context ctx) {
     Bson combinedFilter = constructFilter(ctx);
     Bson sortingOrder = constructSortingOrder(ctx);
 
     // All three of the find, sort, and into steps happen "in parallel" inside the
-    // database system. So MongoDB is going to find the items with the specified
+    // database system. So MongoDB is going to find the products with the specified
     // properties, return those sorted in the specified manner, and put the
     // results into an initially empty ArrayList.
-    ArrayList<Item> matchingItems = itemCollection
+    ArrayList<Product> matchingProducts = productCollection
       .find(combinedFilter)
       .sort(sortingOrder)
       .into(new ArrayList<>());
 
-    // Set the JSON body of the response to be the list of items returned by
+    // Set the JSON body of the response to be the list of products returned by
     // the database.
-    ctx.json(matchingItems);
+    ctx.json(matchingProducts);
   }
 
   private Bson constructFilter(Context ctx) {
@@ -130,45 +130,45 @@ public class ItemController {
   }
 
   /**
-   * Get a JSON response with a list of all the items.
+   * Get a JSON response with a list of all the products.
    *
    * @param ctx a Javalin HTTP context
    */
-  public void addNewItem(Context ctx) {
+  public void addNewProduct(Context ctx) {
     /*
      * The follow chain of statements uses the Javalin validator system
-     * to verify that instance of `Item` provided in this context is
-     * a "legal" item. It checks the following things (in order):
-     *    - The item has a value for the name (`usr.name != null`)
-     *    - The item name is not blank (`usr.name.length > 0`)
+     * to verify that instance of `Product` provided in this context is
+     * a "legal" product. It checks the following things (in order):
+     *    - The product has a value for the name (`usr.name != null`)
+     *    - The product name is not blank (`usr.name.length > 0`)
      */
-    Item newItem = ctx.bodyValidator(Item.class)
-      .check(itm -> itm.name != null && itm.name.length() > 0, "Item must have a non-empty item name")
+    Product newProduct = ctx.bodyValidator(Product.class)
+      .check(itm -> itm.name != null && itm.name.length() > 0, "Product must have a non-empty product name")
       .get();
 
-    itemCollection.insertOne(newItem);
+    productCollection.insertOne(newProduct);
 
     // 201 is the HTTP code for when we successfully
-    // create a new resource (a item in this case).
+    // create a new resource (a product in this case).
     // See, e.g., https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
     // for a description of the various response codes.
     ctx.status(HttpCode.CREATED);
-    ctx.json(Map.of("id", newItem._id));
+    ctx.json(Map.of("id", newProduct._id));
   }
 
   /**
-   * Delete the item specified by the `id` parameter in the request.
+   * Delete the product specified by the `id` parameter in the request.
    *
    * @param ctx a Javalin HTTP context
    */
-  public void deleteItem(Context ctx) {
+  public void deleteProduct(Context ctx) {
     String id = ctx.pathParam("id");
-    DeleteResult deleteResult = itemCollection.deleteOne(eq("_id", new ObjectId(id)));
+    DeleteResult deleteResult = productCollection.deleteOne(eq("_id", new ObjectId(id)));
     if (deleteResult.getDeletedCount() != 1) {
       throw new NotFoundResponse(
         "Was unable to delete ID "
           + id
-          + "; perhaps illegal ID or an ID for an item not in the system?");
+          + "; perhaps illegal ID or an ID for an product not in the system?");
     }
   }
 }

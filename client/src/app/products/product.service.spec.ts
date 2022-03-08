@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { Item } from './item';
-import { ItemService } from './item.service';
+import { Product } from './product';
+import { ProductService } from './product.service';
 
-describe('Item service: ', () => {
-  // A small collection of test Items
-  const testItems: Item[] = [
+describe('Product service: ', () => {
+  // A small collection of test Products
+  const testProducts: Product[] = [
     {
       _id: '529634',
       name: 'Granny Smith Apples'
@@ -20,7 +20,7 @@ describe('Item service: ', () => {
       name: 'Canned Tomatoes'
     }
   ];
-  let itemService: ItemService;
+  let productService: ProductService;
   // These are used to mock the HTTP requests so that we (a) don't have to
   // have the server running and (b) we can check exactly which HTTP
   // requests were made to ensure that we're making the correct requests.
@@ -36,7 +36,7 @@ describe('Item service: ', () => {
     httpTestingController = TestBed.inject(HttpTestingController);
     // Construct an instance of the service with the mock
     // HTTP client.
-    itemService = new ItemService(httpClient);
+    productService = new ProductService(httpClient);
   });
 
   afterEach(() => {
@@ -44,46 +44,46 @@ describe('Item service: ', () => {
     httpTestingController.verify();
   });
 
-  it('getItems() calls api/items', () => {
-    // Assert that the items we get from this call to getItems()
-    // should be our set of test items. Because we're subscribing
-    // to the result of getItems(), this won't actually get
+  it('getProducts() calls api/products', () => {
+    // Assert that the products we get from this call to getProducts()
+    // should be our set of test products. Because we're subscribing
+    // to the result of getProducts(), this won't actually get
     // checked until the mocked HTTP request 'returns' a response.
-    // This happens when we call req.flush(testItems) a few lines
+    // This happens when we call req.flush(testProducts) a few lines
     // down.
-    itemService.getItems().subscribe(
-      items => expect(items).toBe(testItems)
+    productService.getProducts().subscribe(
+      products => expect(products).toBe(testProducts)
     );
 
     // Specify that (exactly) one request will be made to the specified URL.
-    const req = httpTestingController.expectOne(itemService.itemUrl);
+    const req = httpTestingController.expectOne(productService.productUrl);
     // Check that the request made to that URL was a GET request.
     expect(req.request.method).toEqual('GET');
     // Specify the content of the response to that request. This
     // triggers the subscribe above, which leads to that check
     // actually being performed.
-    req.flush(testItems);
+    req.flush(testProducts);
   });
 
-  it('getItemById() calls api/Items/id', () => {
-    const targetItem: Item = testItems[1];
-    const targetId: string = targetItem._id;
-    itemService.getItemById(targetId).subscribe(
-      item => expect(item).toBe(targetItem)
+  it('getProductById() calls api/Products/id', () => {
+    const targetProduct: Product = testProducts[1];
+    const targetId: string = targetProduct._id;
+    productService.getProductById(targetId).subscribe(
+      product => expect(product).toBe(targetProduct)
     );
 
-    const expectedUrl: string = itemService.itemUrl + '/' + targetId;
+    const expectedUrl: string = productService.productUrl + '/' + targetId;
     const req = httpTestingController.expectOne(expectedUrl);
     expect(req.request.method).toEqual('GET');
-    req.flush(targetItem);
+    req.flush(targetProduct);
   });
 
-  it('addItem() posts to api/items', () => {
+  it('addProduct() posts to api/products', () => {
 
-    itemService.addItem(testItems[1]).subscribe();
-    const req = httpTestingController.expectOne(itemService.itemUrl);
+    productService.addProduct(testProducts[1]).subscribe();
+    const req = httpTestingController.expectOne(productService.productUrl);
 
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual(testItems[1]);
+    expect(req.request.body).toEqual(testProducts[1]);
   });
 });
