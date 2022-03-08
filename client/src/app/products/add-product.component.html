@@ -18,11 +18,11 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <mat-label>Threshold</mat-label>
-            <input matInput placeholder="Threshold" formControlName="minThreshold" required>
-            <mat-error *ngFor="let validation of addProductValidationMessages.minThreshold">
-              <mat-error class="error-message" data-test="minThresholdError"
-                        *ngIf="addProductForm.get('minThreshold').hasError(validation.type) && (addProductForm.get('minThreshold').dirty || addProductForm.get('minThreshold').touched)">
+            <mat-label>threshold</mat-label>
+            <input matInput placeholder="threshold" formControlName="threshold" required>
+            <mat-error *ngFor="let validation of addProductValidationMessages.threshold">
+              <mat-error class="error-message" data-test="thresholdError"
+                        *ngIf="addProductForm.get('threshold').hasError(validation.type) && (addProductForm.get('threshold').dirty || addProductForm.get('threshold').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>

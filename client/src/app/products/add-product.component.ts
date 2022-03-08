@@ -20,8 +20,8 @@ export class AddProductComponent implements OnInit {
       { type: 'minlength', message: 'Name must be at least 2 characters long' },
       { type: 'maxlength', message: 'Name cannot be more than 100 characters long' },
     ],
-    minThreshold: [
-      {  type: 'required', message: 'Threshold is required' },
+    threshold: [
+      {  type: 'required', message: 'threshold is required' },
     ]
   };
   constructor(private fb: FormBuilder, private productService: ProductService, private snackBar: MatSnackBar, private router: Router) { }
@@ -43,7 +43,7 @@ export class AddProductComponent implements OnInit {
       ])),
     });
     this.addProductForm = this.fb.group({
-      minThreshold: new FormControl('', Validators.compose([
+      threshold: new FormControl('', Validators.compose([
         Validators.required
       ]))
     });

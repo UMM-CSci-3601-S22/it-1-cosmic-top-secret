@@ -30,6 +30,6 @@ public class Product {
   public String name;
   public String comment;
   public String amount;
-  public String minThreshold;
+  public String threshold;
   public String tags;
 }

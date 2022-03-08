@@ -10,17 +10,17 @@ describe('Product service: ', () => {
     {
       _id: '529634',
       name: 'Granny Smith Apples',
-      minThreshold: '2'
+      threshold: '2'
     },
     {
       _id:'675846',
       name: '12-grain Dakota Style Bread',
-      minThreshold: '2'
+      threshold: '2'
     },
     {
       _id:'65702934',
       name: 'Canned Tomatoes',
-      minThreshold: '2'
+      threshold: '2'
     }
   ];
   let productService: ProductService;
