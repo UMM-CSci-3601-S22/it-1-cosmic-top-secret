@@ -130,7 +130,7 @@ public class ProductController {
      *    - The product name is not blank (`usr.name.length > 0`)
      */
     Product newProduct = ctx.bodyValidator(Product.class)
-      .check(itm -> itm.name != null && itm.name.length() > 0, "Product must have a non-empty product name")
+      .check(itm -> itm.product_name != null && itm.product_name.length() > 0, "Product must have a non-empty product name")
       .get();
 
     productCollection.insertOne(newProduct);
