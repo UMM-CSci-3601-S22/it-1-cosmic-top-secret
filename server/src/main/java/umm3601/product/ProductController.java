@@ -122,7 +122,7 @@ public class ProductController {
   public void addNewProduct(Context ctx) {
 
     Product newProduct = ctx.bodyValidator(Product.class)
-      .check(itm -> itm.productName != null && itm.productName.length() > 0,
+      .check(itm -> itm.product_name != null && itm.product_name.length() > 0,
        "Product must have a non-empty product name")
       .check(itm -> itm.threshold >= 0, "Threshold must zero or greater.")
       .get();
