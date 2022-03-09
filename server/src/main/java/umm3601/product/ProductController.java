@@ -2,10 +2,11 @@ package umm3601.product;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.elemMatch;
+import static com.mongodb.client.model.Filters.all;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Map;
 
@@ -93,13 +94,10 @@ public class ProductController {
       filters.add(eq(THRESHOLD_KEY, targetThreshold));
     }
 
-
     if (ctx.queryParamMap().containsKey(TAGS_KEY)) {
       //take the list of tags and separate them into an array
-      String[] tags = ctx.queryParam(TAGS_KEY).split("\\");
-      for (String tag: tags) {
-        filters.add(elemMatch(TAGS_KEY, eq(TAGS_KEY, tag)));
-      }
+      String[] tags = ctx.queryParam(TAGS_KEY).split("\\\\");
+        filters.add(all(TAGS_KEY, new ArrayList<String>(Arrays.asList(tags))));
     }
 
     Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
@@ -122,16 +120,11 @@ public class ProductController {
    * @param ctx a Javalin HTTP context
    */
   public void addNewProduct(Context ctx) {
-    /*
-     * The follow chain of statements uses the Javalin validator system
-     * to verify that instance of `Product` provided in this context is
-     * a "legal" product. It checks the following things (in order):
-     *    - The product has a value for the name (`usr.name != null`)
-     *    - The product name is not blank (`usr.name.length > 0`)
-     */
+
     Product newProduct = ctx.bodyValidator(Product.class)
       .check(itm -> itm.productName != null && itm.productName.length() > 0,
        "Product must have a non-empty product name")
+      .check(itm -> itm.threshold >= 0, "Threshold must zero or greater.")
       .get();
 
     productCollection.insertOne(newProduct);
