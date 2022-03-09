@@ -9,7 +9,6 @@ public class Product {
   @ObjectId @Id
   @SuppressWarnings({"MemberName"})
   public String _id;
-
   public String productName;
   public ArrayList<String> tags;
   public int threshold;

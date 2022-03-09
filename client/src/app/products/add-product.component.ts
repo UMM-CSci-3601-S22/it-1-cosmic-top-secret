@@ -20,6 +20,9 @@ export class AddProductComponent implements OnInit {
       { type: 'minlength', message: 'Name must be at least 2 characters long' },
       { type: 'maxlength', message: 'Name cannot be more than 100 characters long' },
     ],
+    threshold: [
+      {  type: 'required', message: 'threshold is required' },
+    ]
   };
   constructor(private fb: FormBuilder, private productService: ProductService, private snackBar: MatSnackBar, private router: Router) { }
 
@@ -38,7 +41,11 @@ export class AddProductComponent implements OnInit {
         // to have maximum length limits.
         Validators.maxLength(100),
       ])),
-
+    });
+    this.addProductForm = this.fb.group({
+      threshold: new FormControl('', Validators.compose([
+        Validators.required
+      ]))
     });
   }
   ngOnInit() {

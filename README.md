@@ -31,6 +31,8 @@ to your project and should be removed once you've started.
 replace them with least an elevator pitch description of your project so that
 if someone comes to this repo they'll know what the project is about.
 
+:bangbang: This still needs to be replaced.
+
 ## [Development](DEVELOPMENT.md)
 
 Instructions on setting up the development environment and working with the code are in [the development guide](DEVELOPMENT.md).
