@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import io.javalin.core.JavalinConfig;
+import io.javalin.core.validation.ValidationException;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.util.ContextUtil;
@@ -299,6 +300,88 @@ public class ProductControllerSpec {
     assertEquals("TestProduct", addedProduct.getString("productName"));
     assertEquals(4, addedProduct.getInteger("threshold"));
     assertEquals("perishable", addedProduct.getList("tags", String.class).get(0));
+  }
 
+  @Test
+  public void addNullNameProduct() throws IOException {
+    String testNewProduct = "{"
+    + "\"threshold\": 4,"
+    + "\"tags\":[\"perishable\",\"exists\",\"test\"]"
+    + "}";
+    mockReq.setBodyContent(testNewProduct);
+    mockReq.setMethod("POST");
+
+    Context ctx = mockContext("api/products");
+
+    assertThrows(ValidationException.class, () -> {
+      productController.addNewProduct(ctx);
+    });
+  }
+
+  @Test
+  public void addInvalidNameProduct() throws IOException {
+    String testNewProduct = "{"
+    + "\"productName\": \"\","
+    + "\"threshold\": 4,"
+    + "\"tags\":[\"perishable\",\"exists\",\"test\"]"
+    + "}";
+    mockReq.setBodyContent(testNewProduct);
+    mockReq.setMethod("POST");
+
+    Context ctx = mockContext("api/products");
+
+    assertThrows(ValidationException.class, () -> {
+      productController.addNewProduct(ctx);
+    });
+  }
+
+  @Test
+  public void addInvalidThresholdProduct() throws IOException {
+    String testNewProduct = "{"
+    + "\"productName\": \"TestProduct\","
+    + "\"threshold\": \"notanumber\","
+    + "\"tags\":[\"perishable\",\"exists\",\"test\"]"
+    + "}";
+    mockReq.setBodyContent(testNewProduct);
+    mockReq.setMethod("POST");
+
+    Context ctx = mockContext("api/products");
+
+    assertThrows(ValidationException.class, () -> {
+      productController.addNewProduct(ctx);
+    });
+  }
+
+  @Test
+  public void addNegativeThresholdProduct() throws IOException {
+    String testNewProduct = "{"
+    + "\"productName\": \"TestProduct\","
+    + "\"threshold\": -3,"
+    + "\"tags\":[\"perishable\",\"exists\",\"test\"]"
+    + "}";
+    mockReq.setBodyContent(testNewProduct);
+    mockReq.setMethod("POST");
+
+    Context ctx = mockContext("api/products");
+
+    assertThrows(ValidationException.class, () -> {
+      productController.addNewProduct(ctx);
+    });
+  }
+
+  @Test
+  public void deleteProduct() throws IOException {
+    String testID = butterId.toHexString();
+
+    assertEquals(1, db.getCollection("products").countDocuments(eq("_id", new ObjectId(testID))));
+
+    Context ctx = mockContext("api/products/{id}", Map.of("id", testID));
+
+    productController.deleteProduct(ctx);
+
+    assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
+
+    // Product is no longer in the database
+    assertEquals(0, db.getCollection("products").countDocuments(eq("_id", new ObjectId(testID))));
   }
 }
