@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.javalin.core.JavalinConfig;
-import io.javalin.core.validation.ValidationException;
 import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.util.ContextUtil;
@@ -52,7 +51,7 @@ import io.javalin.http.NotFoundResponse;
  * @throws IOException
  */
 
-@SuppressWarnings({ "Magic Number" })
+@SuppressWarnings({ "MagicNumber" })
 public class PantryControllerSpec {
   private MockHttpServletRequest mockReq = new MockHttpServletRequest();
   private MockHttpServletResponse mockRes = new MockHttpServletResponse();
@@ -247,5 +246,51 @@ public class PantryControllerSpec {
     assertThrows(NotFoundResponse.class, () -> {
       pantryController.getOnePantryInput(ctx);
     });
+  }
+
+  @Test
+  public void addPantryProduct() throws IOException {
+
+    String testNewPantryProduct = "{"
+    + "\"purchaseDate\": \"TestDate\","
+    + "\"tags\":[\"perishable\",\"exists\",\"test\"],"
+    + "\"notes\": \"Test Notes\""
+    + "}";
+    mockReq.setBodyContent(testNewPantryProduct);
+    mockReq.setMethod("POST");
+
+    Context ctx = mockContext("api/pantry");
+
+    pantryController.addNewPantryProduct(ctx);
+    String result = ctx.resultString();
+    String id = javalinJackson.fromJsonString(result, ObjectNode.class).get("id").asText();
+
+    assertEquals(HttpURLConnection.HTTP_CREATED, mockRes.getStatus());
+
+    assertNotEquals("", id);
+    assertEquals(1, db.getCollection("pantry").countDocuments(eq("_id", new ObjectId(id))));
+
+    Document addedPantryProduct = db.getCollection("pantry").find(eq("_id", new ObjectId(id))).first();
+
+    assertNotNull(addedPantryProduct);
+    assertEquals("TestDate", addedPantryProduct.getString("purchaseDate"));
+    assertEquals("perishable", addedPantryProduct.getList("tags", String.class).get(0));
+    assertEquals("Test Notes", addedPantryProduct.getString("notes"));
+  }
+
+  @Test
+  public void deleteProduct() throws IOException {
+    String testID = butterId.toHexString();
+
+    assertEquals(1, db.getCollection("pantry").countDocuments(eq("_id", new ObjectId(testID))));
+
+    Context ctx = mockContext("api/pantry/{id}", Map.of("id", testID));
+
+    pantryController.deletePantryProduct(ctx);
+
+    assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
+
+    // Pantry Product is no longer in the database
+    assertEquals(0, db.getCollection("pantry").countDocuments(eq("_id", new ObjectId(testID))));
   }
 }

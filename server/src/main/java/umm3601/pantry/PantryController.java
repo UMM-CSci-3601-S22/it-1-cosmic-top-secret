@@ -102,4 +102,35 @@ public class PantryController {
     Bson sortingOrder = sortOrder.equals("desc") ?  Sorts.descending(sortBy) : Sorts.ascending(sortBy);
     return sortingOrder;
   }
+
+  /**
+   * Add the Pantry product specified by the `id` parameter in the request.
+   *
+   * @param ctx a Javalin HTTP context
+   */
+  public void addNewPantryProduct(Context ctx) {
+    Pantry newPantryProduct = ctx.bodyValidator(Pantry.class)
+
+      .get();
+    pantryCollection.insertOne(newPantryProduct);
+
+    ctx.status(HttpCode.CREATED);
+    ctx.json(Map.of("id", newPantryProduct._id));
+  }
+
+  /**
+   * Delete the pantry product specified by the `id` parameter in the request.
+   *
+   * @param ctx a Javalin HTTP context
+   */
+  public void deletePantryProduct(Context ctx) {
+    String id = ctx.pathParam("id");
+    DeleteResult deleteResult = pantryCollection.deleteOne(eq("_id", new ObjectId(id)));
+    if (deleteResult.getDeletedCount() != 1) {
+      throw new NotFoundResponse(
+        "Was unable to delete ID "
+          + id
+          + "; perhaps illegal ID or an ID for an pantry product not in the system?");
+    }
+  }
 }
