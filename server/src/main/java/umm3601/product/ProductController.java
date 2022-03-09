@@ -1,58 +1,48 @@
 package umm3601.product;
 
-import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
-import static com.mongodb.client.model.Filters.regex;
+import static com.mongodb.client.model.Filters.and;
+import static com.mongodb.client.model.Filters.all;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Pattern;
+import java.util.Map;
+
 
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Sorts;
 import com.mongodb.client.result.DeleteResult;
 
-import org.bson.Document;
 import org.bson.UuidRepresentation;
-import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
+
 import org.mongojack.JacksonMongoCollection;
 
-import io.javalin.http.BadRequestResponse;
-import io.javalin.http.Context;
-import io.javalin.http.HttpCode;
-import io.javalin.http.NotFoundResponse;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
+import org.bson.Document;
 
-/**
- * Controller that manages requests for info about products.
- */
+import io.javalin.http.Context;
+import io.javalin.http.NotFoundResponse;
+import io.javalin.http.HttpCode;
+
 public class ProductController {
 
-  private static final String NAME_KEY = "name";
-  private static final String THRESHOLD_KEY = "threshold";
-  private static final String TAGS_KEY = "tags";
   private final JacksonMongoCollection<Product> productCollection;
 
-  /**
-   * Construct a controller for products.
-   *
-   * @param database the database containing product data
-   */
+  private static final String NAME_KEY = "productName";
+  private static final String THRESHOLD_KEY = "threshold";
+  private static final String TAGS_KEY = "tags";
+
   public ProductController(MongoDatabase database) {
     productCollection = JacksonMongoCollection.builder().build(
-        database,
-        "products",
-        Product.class,
-        UuidRepresentation.STANDARD);
+      database,
+      "products",
+      Product.class,
+      UuidRepresentation.STANDARD);
   }
 
-  /**
-   * Get the single product specified by the `id` parameter in the request.
-   *
-   * @param ctx a Javalin HTTP context
-   */
   public void getProduct(Context ctx) {
     String id = ctx.pathParam("id");
     Product product;
@@ -60,10 +50,10 @@ public class ProductController {
     try {
       product = productCollection.find(eq("_id", new ObjectId(id))).first();
     } catch (IllegalArgumentException e) {
-      throw new BadRequestResponse("The requested product id wasn't a legal Mongo Object ID.");
+      throw new NotFoundResponse("The requested id wasn't a legal Mongo Object ID.");
     }
     if (product == null) {
-      throw new NotFoundResponse("The requested product was not found");
+      throw new NotFoundResponse("The requested product was not found.");
     } else {
       ctx.json(product);
     }
@@ -93,22 +83,24 @@ public class ProductController {
   }
 
   private Bson constructFilter(Context ctx) {
-    List<Bson> filters = new ArrayList<>(); // start with a blank document
+    List<Bson> filters = new ArrayList<>();
 
     if (ctx.queryParamMap().containsKey(NAME_KEY)) {
-        filters.add(regex(NAME_KEY,  Pattern.quote(ctx.queryParam(NAME_KEY)), "i"));
+      filters.add(eq(NAME_KEY, ctx.queryParam(NAME_KEY)));
     }
+
     if (ctx.queryParamMap().containsKey(THRESHOLD_KEY)) {
       int targetThreshold = ctx.queryParamAsClass(THRESHOLD_KEY, Integer.class).get();
       filters.add(eq(THRESHOLD_KEY, targetThreshold));
     }
+
     if (ctx.queryParamMap().containsKey(TAGS_KEY)) {
-      filters.add(regex(TAGS_KEY,  Pattern.quote(ctx.queryParam(TAGS_KEY)), "i"));
+      //take the list of tags and separate them into an array
+      String[] tags = ctx.queryParam(TAGS_KEY).split("\\\\");
+        filters.add(all(TAGS_KEY, new ArrayList<String>(Arrays.asList(tags))));
     }
 
-    // Combine the list of filters into a single filtering document.
     Bson combinedFilter = filters.isEmpty() ? new Document() : and(filters);
-
     return combinedFilter;
   }
 
@@ -128,15 +120,11 @@ public class ProductController {
    * @param ctx a Javalin HTTP context
    */
   public void addNewProduct(Context ctx) {
-    /*
-     * The follow chain of statements uses the Javalin validator system
-     * to verify that instance of `Product` provided in this context is
-     * a "legal" product. It checks the following things (in order):
-     *    - The product has a value for the name (`usr.name != null`)
-     *    - The product name is not blank (`usr.name.length > 0`)
-     */
+
     Product newProduct = ctx.bodyValidator(Product.class)
-      .check(itm -> itm.name != null && itm.name.length() > 0, "Product must have a non-empty product name")
+      .check(itm -> itm.productName != null && itm.productName.length() > 0,
+       "Product must have a non-empty product name")
+      .check(itm -> itm.threshold >= 0, "Threshold must zero or greater.")
       .get();
 
     productCollection.insertOne(newProduct);
