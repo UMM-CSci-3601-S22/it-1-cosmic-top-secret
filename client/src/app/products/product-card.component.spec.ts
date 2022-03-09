@@ -25,6 +25,7 @@ describe('ProductCardComponent', () => {
     component.product = {
       _id: 'OPEGOSH',
       name: 'Granny Smith Apples',
+      threshold: '2'
     };
     fixture.detectChanges();
   });

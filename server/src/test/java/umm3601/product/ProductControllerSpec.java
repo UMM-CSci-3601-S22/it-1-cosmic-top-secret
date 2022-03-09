@@ -118,9 +118,7 @@ public class ProductControllerSpec {
     testProducts.add(
         new Document()
             .append("name", "apples")
-            .append("comment", "this is a comment")
-            .append("minThreshold", "4")
-            .append("amount", "5")
+            .append("threshold", 4)
             .append("tags", "tag1"));
 
     samsId = new ObjectId();
@@ -227,9 +225,10 @@ public class ProductControllerSpec {
     // Product is no longer in the database
     assertEquals(0, db.getCollection("products").countDocuments(eq("_id", new ObjectId(testID))));
   }
+
   @Test
   public void getProductsByFilter() throws IOException {
-    mockReq.setQueryString("name=apples&comment=this is a comment&minThreshold=4&amount=5&tags=tag1");
+    mockReq.setQueryString("name=apples&comment=this is a comment&threshold=4&amount=5&tags=tag1");
     Context ctx = mockContext("api/products");
 
     productController.getProducts(ctx);
@@ -239,12 +238,11 @@ public class ProductControllerSpec {
     assertEquals(1, resultProduct.length);
     for (Product product : resultProduct) {
       assertEquals("apples", product.name);
-      assertEquals("5", product.amount);
-      assertEquals("this is a comment", product.comment);
-      assertEquals("4", product.minThreshold);
+      assertEquals(4, product.threshold);
       assertEquals("tag1", product.tags);
     }
   }
+
   @Test
   public void getProductWithExistentId() throws IOException {
     String testID = samsId.toHexString();

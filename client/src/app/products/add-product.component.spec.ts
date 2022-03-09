@@ -98,5 +98,22 @@ describe('AddProductComponent', () => {
       });
 
     });
+    describe('The threshold field', () => {
+      let thresholdControl: AbstractControl;
+
+      beforeEach(() => {
+        thresholdControl = addProductComponent.addProductForm.controls.threshold;
+      });
+
+      it('should not allow empty thresholds', () => {
+        thresholdControl.setValue('');
+        expect(thresholdControl.valid).toBeFalsy();
+      });
+
+      it('should be fine with "7"', () => {
+        thresholdControl.setValue('7');
+        expect(thresholdControl.valid).toBeTruthy();
+      });
+    });
   });
 });

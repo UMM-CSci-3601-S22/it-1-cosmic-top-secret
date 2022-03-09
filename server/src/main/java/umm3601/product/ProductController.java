@@ -31,9 +31,7 @@ import io.javalin.http.NotFoundResponse;
 public class ProductController {
 
   private static final String NAME_KEY = "name";
-  private static final String COMMENT_KEY = "comment";
-  private static final String AMOUNT_KEY = "amount";
-  private static final String MINTHRESHOLD_KEY = "minThreshold";
+  private static final String THRESHOLD_KEY = "threshold";
   private static final String TAGS_KEY = "tags";
   private final JacksonMongoCollection<Product> productCollection;
 
@@ -100,14 +98,9 @@ public class ProductController {
     if (ctx.queryParamMap().containsKey(NAME_KEY)) {
         filters.add(regex(NAME_KEY,  Pattern.quote(ctx.queryParam(NAME_KEY)), "i"));
     }
-    if (ctx.queryParamMap().containsKey(COMMENT_KEY)) {
-      filters.add(regex(COMMENT_KEY,  Pattern.quote(ctx.queryParam(COMMENT_KEY)), "i"));
-    }
-    if (ctx.queryParamMap().containsKey(MINTHRESHOLD_KEY)) {
-      filters.add(regex(MINTHRESHOLD_KEY,  Pattern.quote(ctx.queryParam(MINTHRESHOLD_KEY)), "i"));
-    }
-    if (ctx.queryParamMap().containsKey(AMOUNT_KEY)) {
-      filters.add(regex(AMOUNT_KEY,  Pattern.quote(ctx.queryParam(AMOUNT_KEY)), "i"));
+    if (ctx.queryParamMap().containsKey(THRESHOLD_KEY)) {
+      int targetThreshold = ctx.queryParamAsClass(THRESHOLD_KEY, Integer.class).get();
+      filters.add(eq(THRESHOLD_KEY, targetThreshold));
     }
     if (ctx.queryParamMap().containsKey(TAGS_KEY)) {
       filters.add(regex(TAGS_KEY,  Pattern.quote(ctx.queryParam(TAGS_KEY)), "i"));

@@ -28,8 +28,6 @@ public class Product {
   @SuppressWarnings({"MemberName"})
   public String _id;
   public String name;
-  public String comment;
-  public String amount;
-  public String minThreshold;
+  public int threshold;
   public String tags;
 }
