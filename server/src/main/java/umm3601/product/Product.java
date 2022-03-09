@@ -10,7 +10,7 @@ public class Product {
   @SuppressWarnings({"MemberName"})
   public String _id;
 
-  public String product_name;
+  public String productName;
   public ArrayList<String> tags;
   public int threshold;
 }

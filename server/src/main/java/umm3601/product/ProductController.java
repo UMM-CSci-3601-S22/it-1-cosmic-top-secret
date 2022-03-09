@@ -30,7 +30,7 @@ public class ProductController {
 
   private final JacksonMongoCollection<Product> productCollection;
 
-  private static final String NAME_KEY = "product_name";
+  private static final String NAME_KEY = "productName";
   private static final String THRESHOLD_KEY = "threshold";
   private static final String TAGS_KEY = "tags";
 
@@ -130,7 +130,8 @@ public class ProductController {
      *    - The product name is not blank (`usr.name.length > 0`)
      */
     Product newProduct = ctx.bodyValidator(Product.class)
-      .check(itm -> itm.product_name != null && itm.product_name.length() > 0, "Product must have a non-empty product name")
+      .check(itm -> itm.productName != null && itm.productName.length() > 0,
+       "Product must have a non-empty product name")
       .get();
 
     productCollection.insertOne(newProduct);

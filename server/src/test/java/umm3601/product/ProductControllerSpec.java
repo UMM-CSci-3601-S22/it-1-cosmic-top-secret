@@ -38,11 +38,6 @@ import io.javalin.http.Context;
 import io.javalin.http.HandlerType;
 import io.javalin.http.util.ContextUtil;
 import io.javalin.http.HttpCode;
-
-import com.mockrunner.mock.web.MockHttpServletRequest;
-import com.mockrunner.mock.web.MockHttpServletResponse;
-
-import java.util.logging.Logger;
 /**
  * Tests the logic of the ProductController
  *
@@ -68,7 +63,6 @@ public class ProductControllerSpec {
 
   private static JavalinJackson javalinJackson = new JavalinJackson();
 
-  private final static Logger logger = Logger.getLogger(ProductControllerSpec.class.getName());
 
   @BeforeAll
   public static void setupAll() {
@@ -98,7 +92,7 @@ public class ProductControllerSpec {
     List<Document> testProducts = new ArrayList<>();
     testProducts.add(
       new Document()
-      .append("product_name", "apples")
+      .append("productName", "apples")
       .append("threshold", 4)
       .append("tags",
       new ArrayList<String>(
@@ -110,7 +104,7 @@ public class ProductControllerSpec {
     );
     testProducts.add(
       new Document()
-      .append("product_name", "bananas")
+      .append("productName", "bananas")
       .append("threshold", 2)
       .append("tags",
       new ArrayList<String>(
@@ -122,7 +116,7 @@ public class ProductControllerSpec {
     );
     testProducts.add(
       new Document()
-      .append("product_name", "Cereal")
+      .append("productName", "Cereal")
       .append("threshold", 1)
       .append("tags",
       new ArrayList<String>(Arrays.asList(new String[] {
@@ -174,7 +168,6 @@ public class ProductControllerSpec {
 
     productController.getProducts(ctx);
     Product[] returnedProducts = returnedProducts(ctx);
-    logger.info("Returned products (canGetAllProducts): " + returnedProducts);
 
     assertEquals(HttpCode.OK.getStatus(), mockRes.getStatus());
     assertEquals(
@@ -190,7 +183,6 @@ public class ProductControllerSpec {
 
     productController.getProducts(ctx);
     Product[] resultProducts = returnedProducts(ctx);
-    logger.info("Returned products (canGetProduceProducts): " + resultProducts);
 
     assertEquals(HttpCode.OK.getStatus(), mockRes.getStatus());
     assertEquals(2, resultProducts.length);
@@ -213,7 +205,7 @@ public class ProductControllerSpec {
 
   @Test
   public void canGetApples() throws IOException {
-    mockReq.setQueryString("product_name=apples");
+    mockReq.setQueryString("productName=apples");
     Context ctx = mockContext("api/products");
 
     productController.getProducts(ctx);
@@ -223,7 +215,7 @@ public class ProductControllerSpec {
     assertEquals(1, resultProducts.length);
 
     for (Product product: resultProducts) {
-      assertEquals("apples", product.product_name);
+      assertEquals("apples", product.productName);
     }
   }
 
