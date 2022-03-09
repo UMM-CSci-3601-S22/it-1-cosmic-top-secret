@@ -191,4 +191,61 @@ public class PantryControllerSpec {
       returnedPantry.length
     );
   }
+
+  @Test
+  public void canGetPerishableProducts() throws IOException {
+    mockReq.setQueryString("tags=perishable");
+    Context ctx = mockContext("api/pantry");
+
+    pantryController.getPantry(ctx);
+    Pantry[] resultPantry = returnedPantry(ctx);
+
+    assertEquals(HttpCode.OK.getStatus(), mockRes.getStatus());
+    assertEquals(3, resultPantry.length);
+
+    for (Pantry pantry: resultPantry) {
+      assertTrue(pantry.tags.indexOf("perishable") >= 0);
+    }
+  }
+
+  @Test
+  public void respondsCorrectlyToInvalidTag() {
+    mockReq.setQueryString("tags=chewy");
+    Context ctx = mockContext("api/pantry");
+
+    pantryController.getPantry(ctx);
+    Pantry[] resultPantry = returnedPantry(ctx);
+
+    assertEquals(HttpCode.OK.getStatus(), mockRes.getStatus());
+    assertEquals(0, resultPantry.length);
+  }
+
+  @Test
+  public void getPantryProductWithExistingId() throws IOException {
+    String testID = butterId.toHexString();
+    Context ctx = mockContext("api/pantry/{id}", Map.of("id", testID));
+
+    pantryController.getOnePantryInput(ctx);
+    Pantry resultPantry = returnedSinglePantry(ctx);
+
+    assertEquals(HttpURLConnection.HTTP_OK, mockRes.getStatus());
+    assertEquals(butterId.toHexString(), resultPantry._id);
+    assertEquals("2022-09-21", resultPantry.purchaseDate);
+  }
+
+  @Test
+  public void getPantryProductWithBadId() throws IOException {
+    Context ctx = mockContext("/api/pantry/{id}", Map.of("id", "bad"));
+    assertThrows(NotFoundResponse.class, () -> {
+      pantryController.getOnePantryInput(ctx);
+    });
+  }
+
+  @Test
+  public void getPantyProductWithNonExistentId() throws IOException {
+    Context ctx = mockContext("/api/pantry/{id}", Map.of("id", "58af3a600343927e48e87335"));
+    assertThrows(NotFoundResponse.class, () -> {
+      pantryController.getOnePantryInput(ctx);
+    });
+  }
 }
