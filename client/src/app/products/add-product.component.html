@@ -8,11 +8,11 @@
         <mat-card-content fxLayout="column">
           <mat-form-field>
             <mat-label>Name</mat-label>
-            <input matInput placeholder="Name" formControlName="name"
+            <input matInput placeholder="Name" formControlName="productName"
                   required>
-            <mat-error *ngFor="let validation of addProductValidationMessages.name">
-              <mat-error class="error-message" data-test="nameError"
-                        *ngIf="addProductForm.get('name').hasError(validation.type) && (addProductForm.get('name').dirty || addProductForm.get('name').touched)">
+            <mat-error *ngFor="let validation of addProductValidationMessages.productName">
+              <mat-error class="error-message" data-test="productNameError"
+                        *ngIf="addProductForm.get('productName').hasError(validation.type) && (addProductForm.get('productName').dirty || addProductForm.get('productName').touched)">
                 {{validation.message}}
               </mat-error>
             </mat-error>
@@ -27,15 +27,6 @@
               </mat-error>
             </mat-error>
           </mat-form-field>
-
-          <!--
-          <mat-form-field>
-            <mat-label>Company</mat-label>
-            <input matInput placeholder="Company"
-                  formControlName="company">
-            <mat-hint></mat-hint>
-          </mat-form-field>
-          -->
 
         </mat-card-content>
         <mat-card-actions align="end">

@@ -57,44 +57,44 @@ describe('AddProductComponent', () => {
       expect(addProductForm.valid).toBeFalsy();
     });
 
-    describe('The name field', () => {
-      let nameControl: AbstractControl;
+    describe('The productName field', () => {
+      let productNameControl: AbstractControl;
 
       beforeEach(() => {
-        nameControl = addProductComponent.addProductForm.controls.name;
+        productNameControl = addProductComponent.addProductForm.controls.productName;
       });
 
-      it('should not allow empty names', () => {
-        nameControl.setValue('');
-        expect(nameControl.valid).toBeFalsy();
+      it('should not allow empty productNames', () => {
+        productNameControl.setValue('');
+        expect(productNameControl.valid).toBeFalsy();
       });
 
       it('should be fine with "granny smith apples"', () => {
-        nameControl.setValue('granny smith apples');
-        expect(nameControl.valid).toBeTruthy();
+        productNameControl.setValue('granny smith apples');
+        expect(productNameControl.valid).toBeTruthy();
       });
 
-      it('should fail on single character names', () => {
-        nameControl.setValue('x');
-        expect(nameControl.valid).toBeFalsy();
+      it('should fail on single character productNames', () => {
+        productNameControl.setValue('x');
+        expect(productNameControl.valid).toBeFalsy();
         // Annoyingly, Angular uses lowercase 'l' here
         // when it's an upper case 'L' in `Validators.minLength(2)`.
-        expect(nameControl.hasError('minlength')).toBeTruthy();
+        expect(productNameControl.hasError('minlength')).toBeTruthy();
       });
 
       // In the real world, you'd want to be pretty careful about
-      // setting upper limits on things like name lengths just
-      // because there are people with really long names.
-      it('should fail on really long names', () => {
-        nameControl.setValue('x'.repeat(101));
-        expect(nameControl.valid).toBeFalsy();
+      // setting upper limits on things like productName lengths just
+      // because there are products with really long names.
+      it('should fail on really long productNames', () => {
+        productNameControl.setValue('x'.repeat(101));
+        expect(productNameControl.valid).toBeFalsy();
         // Annoyingly, Angular uses lowercase 'l' here
         // when it's an upper case 'L' in `Validators.maxLength(2)`.
-        expect(nameControl.hasError('maxlength')).toBeTruthy();
+        expect(productNameControl.hasError('maxlength')).toBeTruthy();
       });
-      it('should allow digits in the name', () => {
-        nameControl.setValue('Bad2Th3B0ne');
-        expect(nameControl.valid).toBeTruthy();
+      it('should allow digits in the productName', () => {
+        productNameControl.setValue('Bad2Th3B0ne');
+        expect(productNameControl.valid).toBeTruthy();
       });
 
     });
@@ -111,7 +111,7 @@ describe('AddProductComponent', () => {
       });
 
       it('should be fine with "7"', () => {
-        thresholdControl.setValue('7');
+        thresholdControl.setValue(7);
         expect(thresholdControl.valid).toBeTruthy();
       });
     });

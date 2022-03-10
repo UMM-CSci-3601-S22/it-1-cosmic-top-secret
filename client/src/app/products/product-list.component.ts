@@ -34,18 +34,18 @@ export class ProductListComponent implements OnInit, OnDestroy  {
     this.unsub();
     this.getProductsSub = this.productService.getProducts().subscribe(returnedProducts => {
       this.serverFilteredProducts = returnedProducts;
-      /*this.updateFilter();*/
+      this.updateFilter();
     }, err => {
       console.log(err);
     });
   }
 
-/* Filtering
+
   public updateFilter(): void {
     this.filteredProducts = this.productService.filterProducts(
-      this.serverFilteredProducts, { name: this.productName });
+      this.serverFilteredProducts, { productName: this.productName });
   }
-*/
+
 
   /**
    * Starts an asynchronous operation to update the products list

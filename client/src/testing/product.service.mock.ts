@@ -12,18 +12,18 @@ export class MockProductService extends ProductService {
   static testProducts: Product[] = [
     {
       _id: 'apples_id',
-      name: 'Granny Smith Apples',
-      threshold: '3'
+      productName: 'Granny Smith Apples',
+      threshold: 3
     },
     {
       _id: 'steak_id',
-      name: 'Sirloin Steak',
-      threshold: '3'
+      productName: 'Sirloin Steak',
+      threshold: 3
     },
     {
       _id: 'scone_id',
-      name: 'Plain Scones',
-      threshold: '3'
+      productName: 'Plain Scones',
+      threshold: 3
     }
   ];
 
