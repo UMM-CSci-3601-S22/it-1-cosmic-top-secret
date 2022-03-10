@@ -32,6 +32,16 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { UserCardComponent } from './users/user-card.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { AddUserComponent } from './users/add-user.component';
+import { ProductCardComponent } from './products/product-card.component';
+import { ProductProfileComponent } from './products/product-profile.component';
+import { ProductListComponent } from './products/product-list.component';
+import { AddProductComponent } from './products/add-product.component';
+import { ProductService } from './products/product.service';
+import { AddItemComponent } from './pantry/add-item.component';
+import { PantryCardComponent } from './pantry/pantry-card.component';
+import { PantryProfileComponent } from './pantry/pantry-profile.component';
+import { PantryListComponent } from './pantry/pantry-list.component';
+import { PantryService } from './pantry/pantry.service';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -60,6 +70,14 @@ const MATERIAL_MODULES: any[] = [
     UserCardComponent,
     UserProfileComponent,
     AddUserComponent,
+    ProductCardComponent,
+    ProductProfileComponent,
+    ProductListComponent,
+    AddProductComponent,
+    AddItemComponent,
+    PantryCardComponent,
+    PantryProfileComponent,
+    PantryListComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +91,9 @@ const MATERIAL_MODULES: any[] = [
     LayoutModule,
   ],
   providers: [
-    UserService
+    PantryService,
+    ProductService,
+    UserService,
   ],
   bootstrap: [AppComponent]
 })

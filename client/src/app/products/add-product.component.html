@@ -1,0 +1,47 @@
+<div fxLayout="row">
+  <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
+    <form [formGroup]="addProductForm" (ngSubmit)="submitForm();">
+    <mat-card class="add-product-card">
+        <mat-card-header>
+          <mat-card-title class="add-product-title">New Product</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="column">
+          <mat-form-field>
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" formControlName="productName"
+                  required>
+            <mat-error *ngFor="let validation of addProductValidationMessages.productName">
+              <mat-error class="error-message" data-test="productNameError"
+                        *ngIf="addProductForm.get('productName').hasError(validation.type) && (addProductForm.get('productName').dirty || addProductForm.get('productName').touched)">
+                {{validation.message}}
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Threshold</mat-label>
+            <input matInput placeholder="Threshold" formControlName="threshold">
+            <mat-error *ngFor="let validation of addProductValidationMessages.threshold">
+              <mat-error class="error-message" data-test="thresholdError"
+                        *ngIf="addProductForm.get('threshold').hasError(validation.type) && (addProductForm.get('threshold').dirty || addProductForm.get('threshold').touched)">
+                {{validation.message}}
+              </mat-error>
+            </mat-error>
+          </mat-form-field>
+
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button
+            mat-button
+            type="button"
+            color="primary"
+            [disabled]="!addProductForm.valid"
+            type="submit"
+            data-test="confirmAddProductButton"
+          >
+            ADD ITEM
+          </button>
+        </mat-card-actions>
+    </mat-card>
+  </form>
+  </div>
+</div>
