@@ -10,14 +10,20 @@ describe('Pantry service: ', () => {
     {
       _id: '529634',
       productId: '67384990',
+      product: 'bannana',
+      tags: ['fruit', 'perishable']
     },
     {
       _id: '527834',
       productId: '67384990',
+      product : 'cereal',
+      tags: ['nonperishable', 'grain']
     },
     {
       _id: '029994',
       productId: '83675493',
+      product: 'olive oil',
+      tags: ['nonperishable'],
     }
   ];
   let pantryService: PantryService;

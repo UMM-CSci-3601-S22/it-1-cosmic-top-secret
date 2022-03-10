@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockPantryService } from 'src/testing/pantry.service.mock';
 import { MockProductService } from 'src/testing/product.service.mock';
@@ -32,7 +33,8 @@ describe('AddItemComponent', () => {
       ],
       declarations: [AddItemComponent],
       providers: [{ provide: PantryService, useValue: new MockPantryService() },
-                  { provide: ProductService, useValue: new MockProductService()}]
+                  { provide: ProductService, useValue: new MockProductService()},
+                  { provide: ActivatedRoute, useValue: new ActivatedRoute() }]
     }).compileComponents().catch(error => {
       expect(error).toBeNull();
     });

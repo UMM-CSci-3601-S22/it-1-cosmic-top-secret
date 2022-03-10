@@ -34,7 +34,7 @@
           <mat-nav-list class="pantry-nav-list">
             <h3 mat-subheader>Pantry</h3>
             <a mat-list-item *ngFor="let pantry of this.filteredPantry" [routerLink]="['/pantry', pantry._id]" class="pantry-list-item">
-              <h3 matLine class="pantry-list-name"> {{pantry.pantryId}} </h3>
+              <h3 matLine class="pantry-list-name"> {{pantry.productId}} </h3>
             </a>
           </mat-nav-list>
         </mat-card-content>

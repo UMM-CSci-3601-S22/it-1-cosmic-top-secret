@@ -40,13 +40,14 @@ describe('PantryProfileComponent', () => {
   });
 
   it('should navigate to a specific pantry item profile', () => {
-    const expectedPantry: Pantry = MockPantryService.testPantry[0];
+    let expectedPantry: Pantry = MockPantryService.testPantry[0];
     // Setting this should cause anyone subscribing to the paramMap
     // to update. Our `PantryProfileComponent` subscribes to that, so
     // it should update right away.
     activatedRoute.setParamMap({ id: expectedPantry._id });
 
     expect(component.id).toEqual(expectedPantry._id);
+    expectedPantry = MockPantryService.testPantry[0];
     expect(component.pantry).toEqual(expectedPantry);
   });
 
