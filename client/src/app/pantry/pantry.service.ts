@@ -20,17 +20,17 @@ export class PantryService {
     });
   }
 
-  getPantryProductById(id: string): Observable<Pantry> {
+  getPantryItemById(id: string): Observable<Pantry> {
     return this.httpClient.get<Pantry>(this.pantryUrl + '/' + id);
   }
 
-  addPantryProduct(newPantryProduct: Pantry): Observable<string> {
+  addPantryItem(newPantryItem: Pantry): Observable<string> {
     // Send post request to add a new pantry product with the pantry product data as the body.
-    return this.httpClient.post<{id: string}>(this.pantryUrl, newPantryProduct).pipe(map(res => res.id));
+    return this.httpClient.post<{id: string}>(this.pantryUrl, newPantryItem).pipe(map(res => res.id));
   }
 
-  filterPantryProducts(pantryProducts: Pantry[], filters: PantryFilters): Pantry[] {
-    let filteredPantry = pantryProducts;
+  filterPantryItems(pantryItems: Pantry[], filters: PantryFilters): Pantry[] {
+    let filteredPantry = pantryItems;
 
     if (filters.product) {
       filters.product = filters.product.toLowerCase();
