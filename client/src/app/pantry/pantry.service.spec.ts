@@ -10,20 +10,14 @@ describe('Pantry service: ', () => {
     {
       _id: '529634',
       productId: '67384990',
-      product: 'Granny Smith Apples',
-      tags: ['Produce', 'Perishable', 'Bulk']
     },
     {
       _id: '527834',
       productId: '67384990',
-      product: 'Granny Smith Apples',
-      tags: ['Produce', 'Perishable', 'Bulk']
     },
     {
       _id: '029994',
       productId: '83675493',
-      product: 'Lucky Charms Cereal',
-      tags: ['Contains Sugar', 'Magically Delicious']
     }
   ];
   let pantryService: PantryService;
@@ -51,7 +45,7 @@ describe('Pantry service: ', () => {
   });
 
   it('getPantryItems() calls api/pantry', () => {
-    // Assert that the products we get from this call to getPantryItems()
+    // Assert that the pantry products we get from this call to getPantryItems()
     // should be our set of test pantry products. Because we're subscribing
     // to the result of getPantryItems(), this won't actually get
     // checked until the mocked HTTP request 'returns' a response.
@@ -75,7 +69,7 @@ describe('Pantry service: ', () => {
     const targetPantryItem: Pantry = testPantry[1];
     const targetId: string = targetPantryItem._id;
     pantryService.getPantryItemById(targetId).subscribe(
-      product => expect(product).toBe(targetPantryItem)
+      productId => expect(productId).toBe(targetPantryItem)
     );
 
     const expectedUrl: string = pantryService.pantryUrl + '/' + targetId;

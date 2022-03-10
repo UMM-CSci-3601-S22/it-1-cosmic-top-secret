@@ -1,3 +1,4 @@
+  getPantryItemById(id: string): Observable<Pantry> {
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Pantry } from '../app/pantry/pantry';
