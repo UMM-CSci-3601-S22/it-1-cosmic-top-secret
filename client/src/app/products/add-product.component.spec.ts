@@ -111,7 +111,7 @@ describe('AddProductComponent', () => {
       });
 
       it('should be fine with "7"', () => {
-        thresholdControl.setValue('7');
+        thresholdControl.setValue(7);
         expect(thresholdControl.valid).toBeTruthy();
       });
     });

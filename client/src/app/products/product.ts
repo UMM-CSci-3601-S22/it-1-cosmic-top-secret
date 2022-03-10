@@ -1,6 +1,6 @@
 export interface Product {
   _id: string;
-  name: string;
-  threshold: string;
+  productName: string;
+  threshold: number;
 }
 

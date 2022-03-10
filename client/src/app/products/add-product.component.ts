@@ -15,10 +15,9 @@ export class AddProductComponent implements OnInit {
 
   product: Product;
   addProductValidationMessages = {
-    name: [
+    productName: [
       { type: 'required', message: 'Name is required' },
       { type: 'minlength', message: 'Name must be at least 2 characters long' },
-      { type: 'maxlength', message: 'Name cannot be more than 100 characters long' },
     ],
     threshold: [
       {  type: 'required', message: 'threshold is required' },
@@ -32,7 +31,7 @@ export class AddProductComponent implements OnInit {
     // add user form validations
     this.addProductForm = this.fb.group({
       // We allow alphanumeric input and limit the length for name.
-      name: new FormControl('', Validators.compose([
+      productName: new FormControl('', Validators.compose([
         Validators.required,
         Validators.minLength(2),
         // In the real world you'd want to be very careful about having
@@ -41,8 +40,6 @@ export class AddProductComponent implements OnInit {
         // to have maximum length limits.
         Validators.maxLength(100),
       ])),
-    });
-    this.addProductForm = this.fb.group({
       threshold: new FormControl('', Validators.compose([
         Validators.required
       ]))
@@ -54,7 +51,7 @@ export class AddProductComponent implements OnInit {
 
   submitForm() {
     this.productService.addProduct(this.addProductForm.value).subscribe(newID => {
-      this.snackBar.open('Added Product ' + this.addProductForm.value.name, null, {
+      this.snackBar.open('Added Product ' + this.addProductForm.value.productName, null, {
         duration: 2000,
       });
       this.router.navigate(['/products/', newID]);

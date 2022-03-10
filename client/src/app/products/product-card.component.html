@@ -1,6 +1,6 @@
 <mat-card class="product-card" *ngIf="this.product">
   <mat-card-header>
-    <mat-card-title class="product-card-name">{{ this.product.name }}</mat-card-title>
+    <mat-card-title class="product-card-name">{{ this.product.productName }}</mat-card-title>
   </mat-card-header>
   <mat-card-content *ngIf="!this.simple">
     <p>Minimum threshold: <span class="user-card-threshold">{{ this.product.threshold }}</span></p>

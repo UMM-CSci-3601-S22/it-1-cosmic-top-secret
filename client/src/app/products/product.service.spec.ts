@@ -9,18 +9,18 @@ describe('Product service: ', () => {
   const testProducts: Product[] = [
     {
       _id: '529634',
-      name: 'Granny Smith Apples',
-      threshold: '2'
+      productName: 'Granny Smith Apples',
+      threshold: 2
     },
     {
       _id:'675846',
-      name: '12-grain Dakota Style Bread',
-      threshold: '2'
+      productName: '12-grain Dakota Style Bread',
+      threshold: 2
     },
     {
       _id:'65702934',
-      name: 'Canned Tomatoes',
-      threshold: '2'
+      productName: 'Canned Tomatoes',
+      threshold: 2
     }
   ];
   let productService: ProductService;

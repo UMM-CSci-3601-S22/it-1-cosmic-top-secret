@@ -25,7 +25,7 @@
 
       <!-- Card grid view -->
       <div *ngSwitchCase="'card'" fxLayout="row wrap" fxLayoutGap="10px" class="product-cards-container">
-        <app-product-card [simple]="true" *ngFor="let product of filteredProducts" class="product-card" [product]="product" fxFlex="1 1 280px"></app-product-card>
+        <app-product-card [simple]="true" *ngFor="let product of this.filteredProducts" class="product-card" [product]="product" fxFlex="1 1 280px"></app-product-card>
       </div>
 
       <!-- List view -->
@@ -34,7 +34,7 @@
           <mat-nav-list class="product-nav-list">
             <h3 mat-subheader>Products</h3>
             <a mat-list-item *ngFor="let product of this.filteredProducts" [routerLink]="['/products', product._id]" class="product-list-item">
-              <h3 matLine class="product-list-name"> {{product.name}} </h3>
+              <h3 matLine class="product-list-name"> {{product.productName}} </h3>
               <p matLine class="product-list-threshold">{{product.threshold}}</p>
             </a>
           </mat-nav-list>
