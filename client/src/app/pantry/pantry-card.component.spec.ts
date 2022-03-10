@@ -25,8 +25,6 @@ describe('PantryCardComponent', () => {
     component.pantry = {
       _id: 'OPEGOSH',
       productId: 'ApplesID',
-      product: 'Granny Smith Apples',
-      tags: ['Produce', 'Perishable', 'Bulk']
     };
     fixture.detectChanges();
   });

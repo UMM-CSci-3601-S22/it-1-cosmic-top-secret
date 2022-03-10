@@ -12,27 +12,15 @@ export class MockPantryService extends PantryService {
   static testPantry: Pantry[] = [
     {
       _id: '23480764',
-      productId: 'apples_id',
-      product: 'Granny Smith Apples',
-      tags: ['Produce', 'Perishable', 'Bulk'],
-    },
-    {
-      _id: '26194857',
-      productId: 'apples_id',
-      product: 'Granny Smith Apples',
-      tags: ['Produce', 'Perishable', 'Bulk'],
+      productId: 'apples_id'
     },
     {
       _id: '54673459',
-      productId: 'steak_id',
-      product: 'Sirloin Steak',
-      tags: ['Meat', 'On-sale']
+      productId: 'steak_id'
     },
     {
       _id: '54673194',
-      productId: 'scone_id',
-      product: 'Plain Scones',
-      tags: ['Bakery', 'Breakfast', 'Fresh']
+      productId: 'scone_id'
     }
   ];
 

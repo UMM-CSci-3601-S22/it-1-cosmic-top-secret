@@ -32,10 +32,10 @@ export class PantryService {
   filterPantryItems(pantryItems: Pantry[], filters: PantryFilters): Pantry[] {
     let filteredPantry = pantryItems;
 
-    if (filters.product) {
-      filters.product = filters.product.toLowerCase();
+    if (filters.productId) {
+      filters.productId = filters.productId.toLowerCase();
 
-      filteredPantry = filteredPantry.filter(pantry => pantry.product.toLowerCase().indexOf(filters.product) >= 0);
+      filteredPantry = filteredPantry.filter(pantry => pantry.productId.toLowerCase().indexOf(filters.productId) >= 0);
     }
 
     return filteredPantry;
