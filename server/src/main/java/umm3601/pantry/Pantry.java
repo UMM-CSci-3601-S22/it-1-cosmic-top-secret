@@ -2,6 +2,7 @@ package umm3601.pantry;
 
 import org.mongojack.Id;
 import org.mongojack.ObjectId;
+import java.util.ArrayList;
 
 @SuppressWarnings({"VisibilityModifier"})
 public class Pantry {
@@ -11,8 +12,7 @@ public class Pantry {
 
   //Some Mongo Foreign key to product
   public String productId;
-
-  public String notes;
   public String purchaseDate;
-  public String[] tags;
+  public ArrayList<String> tags;
+  public String notes;
 }
