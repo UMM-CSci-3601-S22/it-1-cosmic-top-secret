@@ -12,10 +12,10 @@ describe('Product list', () => {
     page.navigateTo();
   });
 
-  it('Should show 10 products in both card and list view', () => {
-    page.getProductCards().should('have.length', 10);
+  it('Should show 100 products in both card and list view', () => {
+    page.getProductCards().should('have.length', 100);
     page.changeView('list');
-    page.getProductListItems().should('have.length', 10);
+    page.getProductListItems().should('have.length', 100);
   });
 
   it('Should change the view', () => {
@@ -38,7 +38,7 @@ describe('Product list', () => {
 
   it('Should click view profile on a product and go to the right URL', () => {
     page.getProductCards().first().then((card) => {
-      const firstProductName = card.find('.product-card-name').text();
+      const firstProductName = card.find('.product-card-productName').text();
 
       // When the view profile button on the first product card is clicked, the URL should have a valid mongo ID
       page.clickViewProfile(page.getProductCards().first());
@@ -47,7 +47,7 @@ describe('Product list', () => {
       cy.url().should('match', /\/products\/[0-9a-fA-F]{24}$/);
 
       // On this profile page we were sent to, the name and company should be correct
-      cy.get('.product-card-name').first().should('have.text', firstProductName);
+      cy.get('.product-card-productName').first().should('have.text', firstProductName);
     });
    });
 

@@ -70,33 +70,11 @@ describe('Add product', () => {
 
       // The new product should have all the same attributes as we entered
       cy.get('.product-card-productName').should('have.text', product.productName);
-      cy.get('.product-card-threshold').should('have.text', product.threshold);
 
       // We should see the confirmation message at the bottom of the screen
       cy.get('.mat-simple-snackbar').should('contain', `Added Product ${product.productName}`);
     });
 
-    it('Should fail with no company', () => {
-      const product: Product = {
-        _id: null,
-        productName: 'Test Product',
-        threshold: 30,
-      };
-
-      page.addProduct(product);
-
-      // We should get an error message
-      cy.get('.mat-simple-snackbar').should('contain', `Failed to add the product`);
-
-      // We should have stayed on the new product page
-      cy.url()
-        .should('not.match', /\/products\/[0-9a-fA-F]{24}$/)
-        .should('match', /\/products\/new$/);
-
-      // The things we entered in the form should still be there
-      page.getFormField('productName').should('have.value', product.productName);
-      page.getFormField('threshold').should('have.value', product.threshold);
-    });
   });
 
 });
