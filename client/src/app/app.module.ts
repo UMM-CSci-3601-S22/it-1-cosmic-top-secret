@@ -37,6 +37,10 @@ import { ProductProfileComponent } from './products/product-profile.component';
 import { ProductListComponent } from './products/product-list.component';
 import { AddProductComponent } from './products/add-product.component';
 import { ProductService } from './products/product.service';
+import { PantryCardComponent } from './pantry/pantry-card.component';
+import { PantryProfileComponent } from './pantry/pantry-profile.component';
+import { PantryListComponent } from './pantry/pantry-list.component';
+import { PantryService } from './pantry/pantry.service';
 
 const MATERIAL_MODULES: any[] = [
   MatListModule,
@@ -69,6 +73,9 @@ const MATERIAL_MODULES: any[] = [
     ProductProfileComponent,
     ProductListComponent,
     AddProductComponent,
+    PantryCardComponent,
+    PantryProfileComponent,
+    PantryListComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,8 +89,9 @@ const MATERIAL_MODULES: any[] = [
     LayoutModule,
   ],
   providers: [
+    PantryService,
     ProductService,
-    UserService
+    UserService,
   ],
   bootstrap: [AppComponent]
 })
