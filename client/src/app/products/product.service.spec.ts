@@ -9,17 +9,17 @@ describe('Product service: ', () => {
   const testProducts: Product[] = [
     {
       _id: '529634',
-      name: 'Granny Smith Apples',
+      productName: 'Granny Smith Apples',
       threshold: '2'
     },
     {
       _id:'675846',
-      name: '12-grain Dakota Style Bread',
+      productName: '12-grain Dakota Style Bread',
       threshold: '2'
     },
     {
       _id:'65702934',
-      name: 'Canned Tomatoes',
+      productName: 'Canned Tomatoes',
       threshold: '2'
     }
   ];

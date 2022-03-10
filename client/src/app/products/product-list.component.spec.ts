@@ -67,15 +67,15 @@ describe('product list', () => {
   });
 
   it('contains a product named \'Granny Smith Apples\'', () => {
-    expect(productList.serverFilteredProducts.some((product: Product) => product.name === 'Granny Smith Apples')).toBe(true);
+    expect(productList.serverFilteredProducts.some((product: Product) => product.productName === 'Granny Smith Apples')).toBe(true);
   });
 
   it('contains a product named \'Sirloin Steak\'', () => {
-    expect(productList.serverFilteredProducts.some((product: Product) => product.name === 'Sirloin Steak')).toBe(true);
+    expect(productList.serverFilteredProducts.some((product: Product) => product.productName === 'Sirloin Steak')).toBe(true);
   });
 
   it('doesn\'t contain a product named \'Macadamia-Nut Cookies\'', () => {
-    expect(productList.serverFilteredProducts.some((product: Product) => product.name === 'Macadamia-Nut Cookies')).toBe(false);
+    expect(productList.serverFilteredProducts.some((product: Product) => product.productName === 'Macadamia-Nut Cookies')).toBe(false);
   });
 
 });

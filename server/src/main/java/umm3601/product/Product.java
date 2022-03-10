@@ -12,4 +12,12 @@ public class Product {
   public String productName;
   public ArrayList<String> tags;
   public int threshold;
+  public String description;
+  public String brand;
+  public String category;
+  public String store;
+  public String location;
+  public String notes;
+  public String lifespan;
+  public String image;
 }
