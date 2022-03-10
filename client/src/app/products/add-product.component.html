@@ -18,8 +18,8 @@
             </mat-error>
           </mat-form-field>
           <mat-form-field>
-            <mat-label>threshold</mat-label>
-            <input matInput placeholder="threshold" formControlName="threshold">
+            <mat-label>Threshold</mat-label>
+            <input matInput placeholder="Threshold" type="number" formControlName="threshold">
             <mat-error *ngFor="let validation of addProductValidationMessages.threshold">
               <mat-error class="error-message" data-test="thresholdError"
                         *ngIf="addProductForm.get('threshold').hasError(validation.type) && (addProductForm.get('threshold').dirty || addProductForm.get('threshold').touched)">
@@ -27,6 +27,22 @@
               </mat-error>
             </mat-error>
           </mat-form-field>
+
+         <ng-container formArrayName="tags">
+          <ng-container *ngFor="let tagForm of tags.controls; let i = index">
+            <div class="tagInputRow" [formGroupName]="i">
+              <input matInput placeholder="Tag" formControlName="tag">
+            </div>
+          </ng-container>
+        </ng-container>
+
+        <button
+        mat-button
+        type="button"
+        color="primary"
+        (click)="addTag()">
+        Add Tag
+      </button>
 
         </mat-card-content>
         <mat-card-actions align="end">
