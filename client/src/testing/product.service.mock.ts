@@ -13,17 +13,17 @@ export class MockProductService extends ProductService {
     {
       _id: 'apples_id',
       productName: 'Granny Smith Apples',
-      threshold: '3'
+      threshold: 3
     },
     {
       _id: 'steak_id',
       productName: 'Sirloin Steak',
-      threshold: '3'
+      threshold: 3
     },
     {
       _id: 'scone_id',
       productName: 'Plain Scones',
-      threshold: '3'
+      threshold: 3
     }
   ];
 
