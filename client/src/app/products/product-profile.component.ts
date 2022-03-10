@@ -30,6 +30,10 @@ export class ProductProfileComponent implements OnInit, OnDestroy {
     });
   }
 
+  editItem() {
+
+  }
+
   ngOnDestroy(): void {
     if (this.getProductSub) {
       this.getProductSub.unsubscribe();

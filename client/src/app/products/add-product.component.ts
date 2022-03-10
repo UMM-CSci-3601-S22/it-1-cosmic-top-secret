@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Product } from './product';
 import { ProductService } from './product.service';
 @Component({
@@ -10,6 +11,12 @@ import { ProductService } from './product.service';
   styleUrls: ['./add-product.component.scss']
 })
 export class AddProductComponent implements OnInit {
+
+
+  productToEdit: Product;
+  id: string;
+  getProductSub: Subscription;
+
 
   addProductForm: FormGroup;
 
@@ -49,7 +56,16 @@ export class AddProductComponent implements OnInit {
     });
   }
   ngOnInit() {
+    this.route.paramMap.subscribe((pmap) => {
+
+    });
     this.createForms();
+  }
+
+  ngOnDestroy(): void {
+    if (this.getProductSub) {
+      this.getProductSub.unsubscribe();
+    }
   }
 
   submitForm() {

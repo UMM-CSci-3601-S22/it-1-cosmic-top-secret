@@ -19,7 +19,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>threshold</mat-label>
-            <input matInput placeholder="threshold" formControlName="threshold">
+            <input matInput placeholder="Threshold" formControlName="threshold">
             <mat-error *ngFor="let validation of addProductValidationMessages.threshold">
               <mat-error class="error-message" data-test="thresholdError"
                         *ngIf="addProductForm.get('threshold').hasError(validation.type) && (addProductForm.get('threshold').dirty || addProductForm.get('threshold').touched)">

@@ -1,6 +1,13 @@
 <div fxLayout="row">
   <div fxFlex fxFlex.gt-sm="80" fxFlexOffset.gt-sm="10">
     <app-product-card [product]="this.product"></app-product-card>
+    <button
+    mat-button
+    type="button"
+    (click)="editItem()"
+    >
+    Edit
+    </button>
   </div>
 </div>
 
