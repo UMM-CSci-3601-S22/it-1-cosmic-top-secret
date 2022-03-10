@@ -1,4 +1,4 @@
 export interface PantryFilters {
   _id?: string;
-  productId: string
+  productId: string;
 }
