@@ -18,9 +18,11 @@ export class AddProductComponent implements OnInit {
     productName: [
       { type: 'required', message: 'Name is required' },
       { type: 'minlength', message: 'Name must be at least 2 characters long' },
+      { type: 'maxlength', message: 'Name cannot be longer than 100 characters long' },
     ],
     threshold: [
-      {  type: 'required', message: 'threshold is required' },
+      {  type: 'min', message: 'Minimum quantity can not be less than 0' },
+      {  type: 'pattern', message: 'Age must be a whole number'},
     ]
   };
   constructor(private fb: FormBuilder, private productService: ProductService, private snackBar: MatSnackBar, private router: Router) { }
@@ -41,7 +43,8 @@ export class AddProductComponent implements OnInit {
         Validators.maxLength(100),
       ])),
       threshold: new FormControl('', Validators.compose([
-        Validators.required
+        Validators.min(0),
+        Validators.pattern('^[0-9]+$')
       ]))
     });
   }
