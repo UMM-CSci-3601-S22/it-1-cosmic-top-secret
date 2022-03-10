@@ -23,6 +23,7 @@ export class AddProductComponent implements OnInit {
     threshold: [
       {  type: 'min', message: 'Minimum quantity can not be less than 0' },
       {  type: 'pattern', message: 'Age must be a whole number'},
+      { type: 'minlength', message: 'Threshold must have a value.'}
     ]
   };
   constructor(private fb: FormBuilder, private productService: ProductService, private snackBar: MatSnackBar, private router: Router) { }
@@ -43,6 +44,8 @@ export class AddProductComponent implements OnInit {
         Validators.maxLength(100),
       ])),
       threshold: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.minLength(1),
         Validators.min(0),
         Validators.pattern('^[0-9]+$')
       ]))

@@ -16,7 +16,7 @@ describe('AddProductComponent', () => {
   let addProductForm: FormGroup;
   let fixture: ComponentFixture<AddProductComponent>;
 
-  beforeEach(async () => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -31,10 +31,10 @@ describe('AddProductComponent', () => {
       ],
       declarations: [AddProductComponent],
       providers: [{ provide: ProductService, useValue: new MockProductService() }]
-    })
-      .compileComponents().catch(error => {
-        expect(error).toBeNull();
-      });
+    }).compileComponents().catch(error => {
+      expect(error).toBeNull();
+    });
+  }));
 
     beforeEach(() => {
       fixture = TestBed.createComponent(AddProductComponent);
@@ -116,4 +116,3 @@ describe('AddProductComponent', () => {
       });
     });
   });
-});
