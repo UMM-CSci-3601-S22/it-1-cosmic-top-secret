@@ -16,7 +16,7 @@ describe('AddProductComponent', () => {
   let addProductForm: FormGroup;
   let fixture: ComponentFixture<AddProductComponent>;
 
-  beforeEach(async () => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
@@ -35,85 +35,79 @@ describe('AddProductComponent', () => {
       .compileComponents().catch(error => {
         expect(error).toBeNull();
       });
+  }));
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddProductComponent);
+    addProductComponent = fixture.componentInstance;
+    addProductComponent.ngOnInit();
+    fixture.detectChanges();
+    addProductForm = addProductComponent.addProductForm;
+    expect(addProductForm).toBeDefined();
+    expect(addProductForm.controls).toBeDefined();
+  });
+
+  it('should create the component and form', () => {
+    expect(addProductComponent).toBeTruthy();
+    expect(addProductForm).toBeTruthy();
+  });
+
+  // Confirms that an initial, empty form is *not* valid, so
+  // people can't submit an empty form.
+  it('form should be invalid when empty', () => {
+    expect(addProductForm.valid).toBeFalsy();
+  });
+
+  describe('The productName field', () => {
+    let productNameControl: AbstractControl;
 
     beforeEach(() => {
-      fixture = TestBed.createComponent(AddProductComponent);
-      addProductComponent = fixture.componentInstance;
-      addProductComponent.ngOnInit();
-      fixture.detectChanges();
-      addProductForm = addProductComponent.addProductForm;
-      expect(addProductForm).toBeDefined();
-      expect(addProductForm.controls).toBeDefined();
+      productNameControl = addProductComponent.addProductForm.controls.productName;
     });
 
-    it('should create the component and form', () => {
-      expect(addProductComponent).toBeTruthy();
-      expect(addProductForm).toBeTruthy();
+    it('should not allow empty productNames', () => {
+      productNameControl.setValue('');
+      expect(productNameControl.valid).toBeFalsy();
     });
 
-    // Confirms that an initial, empty form is *not* valid, so
-    // people can't submit an empty form.
-    it('form should be invalid when empty', () => {
-      expect(addProductForm.valid).toBeFalsy();
+    it('should be fine with "granny smith apples"', () => {
+      productNameControl.setValue('granny smith apples');
+      expect(productNameControl.valid).toBeTruthy();
     });
 
-    describe('The productName field', () => {
-      let productNameControl: AbstractControl;
-
-      beforeEach(() => {
-        productNameControl = addProductComponent.addProductForm.controls.productName;
-      });
-
-      it('should not allow empty productNames', () => {
-        productNameControl.setValue('');
-        expect(productNameControl.valid).toBeFalsy();
-      });
-
-      it('should be fine with "granny smith apples"', () => {
-        productNameControl.setValue('granny smith apples');
-        expect(productNameControl.valid).toBeTruthy();
-      });
-
-      it('should fail on single character productNames', () => {
-        productNameControl.setValue('x');
-        expect(productNameControl.valid).toBeFalsy();
-        // Annoyingly, Angular uses lowercase 'l' here
-        // when it's an upper case 'L' in `Validators.minLength(2)`.
-        expect(productNameControl.hasError('minlength')).toBeTruthy();
-      });
-
-      // In the real world, you'd want to be pretty careful about
-      // setting upper limits on things like productName lengths just
-      // because there are products with really long names.
-      it('should fail on really long productNames', () => {
-        productNameControl.setValue('x'.repeat(101));
-        expect(productNameControl.valid).toBeFalsy();
-        // Annoyingly, Angular uses lowercase 'l' here
-        // when it's an upper case 'L' in `Validators.maxLength(2)`.
-        expect(productNameControl.hasError('maxlength')).toBeTruthy();
-      });
-      it('should allow digits in the productName', () => {
-        productNameControl.setValue('Bad2Th3B0ne');
-        expect(productNameControl.valid).toBeTruthy();
-      });
-
+    it('should fail on single character productNames', () => {
+      productNameControl.setValue('x');
+      expect(productNameControl.valid).toBeFalsy();
+      // Annoyingly, Angular uses lowercase 'l' here
+      // when it's an upper case 'L' in `Validators.minLength(2)`.
+      expect(productNameControl.hasError('minlength')).toBeTruthy();
     });
-    describe('The threshold field', () => {
-      let thresholdControl: AbstractControl;
 
-      beforeEach(() => {
-        thresholdControl = addProductComponent.addProductForm.controls.threshold;
-      });
+    // In the real world, you'd want to be pretty careful about
+    // setting upper limits on things like productName lengths just
+    // because there are products with really long names.
+    it('should fail on really long productNames', () => {
+      productNameControl.setValue('x'.repeat(101));
+      expect(productNameControl.valid).toBeFalsy();
+      // Annoyingly, Angular uses lowercase 'l' here
+      // when it's an upper case 'L' in `Validators.maxLength(2)`.
+      expect(productNameControl.hasError('maxlength')).toBeTruthy();
+    });
+    it('should allow digits in the productName', () => {
+      productNameControl.setValue('Bad2Th3B0ne');
+      expect(productNameControl.valid).toBeTruthy();
+    });
 
-      it('should not allow empty thresholds', () => {
-        thresholdControl.setValue('');
-        expect(thresholdControl.valid).toBeFalsy();
-      });
+  });
+  describe('The threshold field', () => {
+    let thresholdControl: AbstractControl;
 
-      it('should be fine with "7"', () => {
-        thresholdControl.setValue(7);
-        expect(thresholdControl.valid).toBeTruthy();
-      });
+    beforeEach(() => {
+      thresholdControl = addProductComponent.addProductForm.controls.threshold;
+    });
+
+    it('should be fine with "7"', () => {
+      thresholdControl.setValue(7);
+      expect(thresholdControl.valid).toBeTruthy();
     });
   });
 });
