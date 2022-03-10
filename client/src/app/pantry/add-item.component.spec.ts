@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, FormGroup, AbstractControl } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,6 +28,7 @@ describe('AddItemComponent', () => {
         MatSnackBarModule,
         MatCardModule,
         MatFormFieldModule,
+        MatInputModule,
         MatSelectModule,
         BrowserAnimationsModule,
         RouterTestingModule
@@ -64,12 +66,20 @@ describe('AddItemComponent', () => {
     beforeEach(() => {
       productControl = addItemComponent.addPantryForm.controls.product;
     });
-    it('should be fine with "granny smith apples"', () => {
-      productControl.setValue('granny smith apples');
+    it('should be fine with "Granny Smith Apples"', () => {
+      productControl.setValue('Granny Smith Apples');
       expect(productControl.valid).toBeTruthy();
     });
     it('should not be fine with "g s apples"', () => {
       productControl.setValue('g s apples');
+      expect(productControl.valid).toBeFalsy();
+    });
+    it('should be fine with "granny smith apples"', () => {
+      productControl.setValue('granny smith apples');
+      expect(productControl.valid).toBeTruthy();
+    });
+    it('should be fine with "gRAnnY sMith APPLES"', () => {
+      productControl.setValue('gRAnnY sMith APPLES');
       expect(productControl.valid).toBeTruthy();
     });
   });
